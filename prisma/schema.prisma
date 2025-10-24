@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  fid             BigInt      @id @unique
+  username        String?
+  displayName     String?
+  pfpUrl          String?
+  bio             String?
+  walletAddress   String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  voices          Voice[]
+  likes           VoiceLike[]
+  comments        VoiceComment[]
+  views           VoiceView[]
+  notifications   Notification[] @relation("RecipientNotifications")
+  sentNotifications Notification[] @relation("SenderNotifications")
+  userPoints      UserPoints?
+}
+
+model Voice {
+  id          String        @id @default(uuid())
+  userFid     BigInt
+  user        User          @relation(fields: [userFid], references: [fid])
+  audioUrl    String
+  duration    Float
+  title       String?
+  description String?
+  isAnonymous Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  likes       VoiceLike[]
+  comments    VoiceComment[]
+  views       VoiceView[]
+  notifications Notification[]
+}
+
+model VoiceLike {
+  id        String   @id @default(uuid())
+  userFid   BigInt
+  user      User     @relation(fields: [userFid], references: [fid])
+  voiceId   String
+  voice     Voice    @relation(fields: [voiceId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userFid, voiceId])
+}
+
+model VoiceComment {
+  id        String   @id @default(uuid())
+  userFid   BigInt
+  user      User     @relation(fields: [userFid], references: [fid])
+  voiceId   String
+  voice     Voice    @relation(fields: [voiceId], references: [id])
+  content   String
+  type      String   // 'text' or 'audioUrl'
+  createdAt DateTime @default(now())
+}
+
+model VoiceView {
+  id        String   @id @default(uuid())
+  userFid   BigInt?
+  user      User?    @relation(fields: [userFid], references: [fid])
+  voiceId   String
+  voice     Voice    @relation(fields: [voiceId], references: [id])
+  ipAddress String?  // For anonymous views
+  createdAt DateTime @default(now())
+
+  @@unique([userFid, voiceId])
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  recipientFid BigInt
+  recipient   User      @relation("RecipientNotifications", fields: [recipientFid], references: [fid])
+  senderFid   BigInt?
+  sender      User?     @relation("SenderNotifications", fields: [senderFid], references: [fid])
+  type        String    // 'like', 'comment'
+  voiceId     String
+  voice       Voice     @relation(fields: [voiceId], references: [id])
+  read        Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+model UserPoints {
+  userFid     BigInt   @id @unique
+  user        User     @relation(fields: [userFid], references: [fid])
+  totalPoints Int      @default(0)
+  viewPoints  Int      @default(0)
+  likePoints  Int      @default(0)
+  commentPoints Int    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
