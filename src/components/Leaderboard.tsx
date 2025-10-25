@@ -24,12 +24,10 @@ interface LeaderboardProps {
 export function Leaderboard({ className }: LeaderboardProps) {
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
-  const [timeframe, setTimeframe] = useState<"all" | "weekly" | "monthly">("all");
-
-  const fetchLeaderboard = useCallback(async (timeframeParam: string = timeframe) => {
+  const fetchLeaderboard = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/leaderboard?timeframe=${timeframeParam}&limit=50`);
+      const response = await fetch(`/api/leaderboard?timeframe=all&limit=50`);
       if (!response.ok) {
         throw new Error('Failed to fetch leaderboard');
       }
@@ -42,7 +40,7 @@ export function Leaderboard({ className }: LeaderboardProps) {
     } finally {
       setLoading(false);
     }
-  }, [timeframe]);
+  }, []);
 
   useEffect(() => {
     fetchLeaderboard();
@@ -78,66 +76,39 @@ export function Leaderboard({ className }: LeaderboardProps) {
   return (
     <div className={className}>
 
-      {/* Timeframe Filter */}
-      <div className="flex justify-center gap-2 mb-6">
-        <Button
-          variant={timeframe === "all" ? "default" : "outline"}
-          onClick={() => setTimeframe("all")}
-          size="sm"
-          className={timeframe === "all" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "border-purple-500 text-purple-300 hover:bg-purple-800/30"}
-        >
-          All Time
-        </Button>
-        <Button
-          variant={timeframe === "weekly" ? "default" : "outline"}
-          onClick={() => setTimeframe("weekly")}
-          size="sm"
-          className={timeframe === "weekly" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "border-purple-500 text-purple-300 hover:bg-purple-800/30"}
-        >
-          Weekly
-        </Button>
-        <Button
-          variant={timeframe === "monthly" ? "default" : "outline"}
-          onClick={() => setTimeframe("monthly")}
-          size="sm"
-          className={timeframe === "monthly" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "border-purple-500 text-purple-300 hover:bg-purple-800/30"}
-        >
-          Monthly
-        </Button>
-      </div>
 
 
       {/* Leaderboard Entries */}
       {leaderboard.length === 0 ? (
         <div className="text-center py-12 text-blue-200">
-          No data available for this timeframe
+          No leaderboard data available
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-1">
           {leaderboard.map((entry) => (
-            <div key={entry.user.fid} className="bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 rounded-lg p-4 border border-purple-500/30">
-              <div className="flex items-center gap-4">
+            <div key={entry.user.fid} className="card-professional p-2">
+              <div className="flex items-center gap-2">
                 {/* Rank */}
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-5 h-5 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 flex items-center justify-center text-white font-bold text-xs">
                   {getBadge(entry.rank)}
                 </div>
                 
                 {/* User Info */}
-                <div className="flex items-center gap-3 flex-1">
-                  <Avatar className="h-10 w-10">
+                <div className="flex items-center gap-1 flex-1">
+                  <Avatar className="h-6 w-6">
                     <AvatarImage src={entry.user.pfpUrl} alt={getDisplayName(entry.user)} />
-                    <AvatarFallback className="text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white">{getInitials(entry.user)}</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-gradient-to-r from-blue-600 to-blue-500 text-white">{getInitials(entry.user)}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <div className="font-medium text-sm text-white">{getDisplayName(entry.user)}</div>
-                    <div className="text-xs text-blue-300">@{entry.user.username || `user_${entry.user.fid}`}</div>
+                    <div className="font-medium text-xs text-white truncate">{getDisplayName(entry.user)}</div>
+                    <div className="text-xs text-blue-300 truncate">@{entry.user.username || `user_${entry.user.fid}`}</div>
                   </div>
                 </div>
                 
                 {/* Stats */}
                 <div className="text-right">
-                  <div className="text-sm text-blue-300">{entry.voicesCount} voices</div>
-                  <div className="font-bold text-purple-400">{entry.totalPoints.toLocaleString()} XP</div>
+                  <div className="text-xs text-blue-300">{entry.voicesCount} voices</div>
+                  <div className="font-bold text-xs text-blue-400">{entry.totalPoints.toLocaleString()} XP</div>
                 </div>
               </div>
             </div>

@@ -8,7 +8,6 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "~/components/ui/sheet";
 import { toast } from "sonner";
 // import { ShareCastButton } from "~/components/share-cast-button"; // Moved to upload success popup
@@ -311,7 +310,6 @@ export default function App() {
         <SheetContent side="bottom" className="border-t border-blue-200 h-screen overflow-y-auto bg-gradient-to-b from-green-50 to-emerald-50 pt-6 pb-8">
           <SheetHeader>
             <SheetTitle>Profile</SheetTitle>
-            <SheetDescription>Your voice social profile</SheetDescription>
           </SheetHeader>
           <div className="mt-4 pb-4">
             <UserProfile userFid={context?.user?.fid?.toString()} />
@@ -324,7 +322,6 @@ export default function App() {
         <SheetContent side="bottom" className="border-t border-blue-200 h-screen overflow-y-auto bg-gradient-to-b from-green-50 to-emerald-50 pt-6 pb-8">
           <SheetHeader>
             <SheetTitle>Leaderboard</SheetTitle>
-            <SheetDescription>Top voice creators</SheetDescription>
           </SheetHeader>
           <div className="mt-4 pb-4">
             <Leaderboard />
@@ -337,7 +334,6 @@ export default function App() {
         <SheetContent side="bottom" className="border-t border-blue-200 h-screen overflow-y-auto bg-gradient-to-b from-green-50 to-emerald-50 pt-6 pb-8">
           <SheetHeader>
             <SheetTitle>Notifications</SheetTitle>
-            <SheetDescription>Your activity updates</SheetDescription>
           </SheetHeader>
           <div className="mt-4 pb-4">
             <Notifications currentUserFid={context?.user?.fid?.toString()} />

@@ -107,11 +107,11 @@ export function VoiceCardPopup({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[380px] max-h-[80vh] overflow-y-auto bg-gradient-to-br from-blue-900/95 via-purple-900/95 to-pink-900/95 border-purple-500/30 text-white">
+        <DialogContent className="sm:max-w-[380px] max-h-[80vh] overflow-y-auto bg-gradient-to-br from-slate-900/95 via-blue-900/95 to-slate-800/95 border-blue-600/30 text-white">
           <DialogHeader className="pb-2">
             <DialogTitle className="text-lg text-white">Voice Details</DialogTitle>
             <DialogDescription className="text-blue-200">
-              Listen to this voice and interact with the community
+              
             </DialogDescription>
           </DialogHeader>
 
@@ -120,13 +120,13 @@ export function VoiceCardPopup({
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
                 {voice?.isAnonymous ? (
-                  <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
+                  <AvatarFallback className="bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xs">
                     ?
                   </AvatarFallback>
                 ) : (
                   <>
                     <AvatarImage src={voice.user?.pfpUrl} alt={getDisplayName(voice.user)} />
-                    <AvatarFallback className="text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white">{getInitials(voice.user)}</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-gradient-to-r from-blue-600 to-blue-500 text-white">{getInitials(voice.user)}</AvatarFallback>
                   </>
                 )}
               </Avatar>
@@ -136,8 +136,8 @@ export function VoiceCardPopup({
                   {formatDistanceToNow(new Date(voice.createdAt), { addSuffix: true })}
                 </div>
               </div>
-              <Badge variant="secondary" className="text-xs px-2 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400">
-                {calculatePoints()} pts
+              <Badge variant="secondary" className="text-xs px-2 py-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white border-blue-400">
+                {calculatePoints()} XP
               </Badge>
             </div>
 
@@ -155,7 +155,7 @@ export function VoiceCardPopup({
             </div>
 
             {/* Voice Player */}
-            <div className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-lg p-3 border border-purple-500/30">
+            <div className="bg-gradient-to-r from-blue-900/50 to-blue-800/50 rounded-lg p-3 border border-blue-500/30">
               <VoicePlayer 
                 audioUrl={voice.audioUrl} 
                 onPlay={handlePlay}
@@ -164,7 +164,7 @@ export function VoiceCardPopup({
             </div>
 
             {/* Stats */}
-            <div className="flex items-center justify-around text-center text-sm border-t border-b border-purple-500/30 py-2">
+            <div className="flex items-center justify-around text-center text-sm border-t border-b border-blue-500/30 py-2">
               <div>
                 <div className="font-bold text-base text-white">{voice.views?.length || 0}</div>
                 <div className="text-blue-300 text-xs">Views</div>
@@ -188,8 +188,8 @@ export function VoiceCardPopup({
                 disabled={isLiking}
                 className={`flex items-center gap-1 text-xs px-3 ${
                   isLiked 
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white" 
-                    : "border-purple-500 text-purple-300 hover:bg-purple-800/30"
+                    ? "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white" 
+                    : "border-blue-500 text-blue-300 hover:bg-blue-800/30"
                 }`}
               >
                 <Heart className={`h-3 w-3 ${isLiked ? "fill-current" : ""}`} />
@@ -200,7 +200,7 @@ export function VoiceCardPopup({
                 variant="outline"
                 size="sm"
                 onClick={handleComment}
-                className="flex items-center gap-1 text-xs px-3 border-purple-500 text-purple-300 hover:bg-purple-800/30"
+                className="flex items-center gap-1 text-xs px-3 border-blue-500 text-blue-300 hover:bg-blue-800/30"
               >
                 <MessageCircle className="h-3 w-3" />
                 {voice.comments?.length || 0}
@@ -210,7 +210,7 @@ export function VoiceCardPopup({
                 variant="outline"
                 size="sm"
                 onClick={handleShare}
-                className="flex items-center gap-1 text-xs px-3 border-purple-500 text-purple-300 hover:bg-purple-800/30"
+                className="flex items-center gap-1 text-xs px-3 border-blue-500 text-blue-300 hover:bg-blue-800/30"
               >
                 <Share className="h-3 w-3" />
                 Share

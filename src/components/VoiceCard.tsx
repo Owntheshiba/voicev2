@@ -199,7 +199,7 @@ export function VoiceCard({
 
         {/* Points Badge */}
         <Badge variant="outline" className="text-xs">
-          {voice.views.length + (likeCount * 5) + (voice.comments.length * 10)} pts
+          {voice.views.length + (likeCount * 5) + (voice.comments.length * 10)} XP
         </Badge>
       </div>
 
