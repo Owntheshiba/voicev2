@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
     const username = formData.get("username") as string;
     const displayName = formData.get("displayName") as string;
     const pfpUrl = formData.get("pfpUrl") as string;
-    const bio = formData.get("bio") as string;
 
     if (!audioFile || !userFid || isNaN(duration)) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -38,14 +37,12 @@ export async function POST(req: NextRequest) {
         username: username || undefined,
         displayName: displayName || undefined,
         pfpUrl: pfpUrl || undefined,
-        bio: bio || undefined,
       },
       create: {
         fid: BigInt(userFid),
         username: username || `user_${userFid}`,
         displayName: displayName || undefined,
         pfpUrl: pfpUrl || undefined,
-        bio: bio || undefined,
       },
     });
 

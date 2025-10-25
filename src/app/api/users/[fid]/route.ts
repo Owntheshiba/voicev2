@@ -87,7 +87,6 @@ export async function GET(
         username: user.username,
         displayName: user.displayName,
         pfpUrl: user.pfpUrl,
-        bio: user.bio,
         createdAt: user.createdAt,
         stats: {
           totalVoices: user._count.voices,

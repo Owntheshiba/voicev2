@@ -16,7 +16,6 @@ interface UserProfile {
   username?: string;
   displayName?: string;
   pfpUrl?: string;
-  bio?: string;
   createdAt: string;
   stats: {
     totalVoices: number;
@@ -140,9 +139,6 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
           <div className="flex-1">
             <h1 className="text-lg font-bold">{getDisplayName()}</h1>
             <p className="text-sm text-gray-500">@{getUsername()}</p>
-            {profile.bio && (
-              <p className="text-sm text-gray-600 mt-1">{profile.bio}</p>
-            )}
           </div>
 
           <div className="text-right">

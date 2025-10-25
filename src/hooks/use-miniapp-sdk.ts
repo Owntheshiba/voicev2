@@ -35,7 +35,6 @@ export function useMiniAppSdk() {
               username: context.user.username,
               displayName: context.user.displayName,
               pfpUrl: context.user.pfpUrl,
-              bio: context.user.bio
             })
           });
 
