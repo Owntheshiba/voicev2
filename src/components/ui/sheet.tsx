@@ -31,7 +31,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  "fixed z-50 gap-4 bg-gradient-to-br from-blue-900/95 via-purple-900/95 to-pink-900/95 border-purple-500/30 text-white p-6 shadow-lg",
+  "fixed z-50 gap-4 bg-gradient-to-br from-slate-900/95 via-blue-900/95 to-slate-800/95 border-blue-600/30 text-gray-300 p-6 shadow-lg",
   {
     variants: {
       side: {

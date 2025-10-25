@@ -113,9 +113,9 @@ export function VoiceChatCard({
               aria-label={isPlaying ? "Pause voice message" : "Play voice message"}
             >
               {isPlaying ? (
-                <Pause className="w-5 h-5 text-blue-800" />
+                <Pause className="w-5 h-5 text-blue-600" />
               ) : (
-                <Play className="w-5 h-5 text-blue-800" />
+                <Play className="w-5 h-5 text-blue-600" />
               )}
             </button>
 

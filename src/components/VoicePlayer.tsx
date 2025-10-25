@@ -71,6 +71,20 @@ export function VoicePlayer({
       setVolume(audio.volume);
       setIsMuted(audio.muted);
     };
+    
+    const handleError = (e: any) => {
+      console.error('Audio playback error:', e);
+      setIsPlaying(false);
+      setIsLoading(false);
+      // You could show a toast or error message here
+    };
+    
+    const handleLoadError = (e: any) => {
+      console.error('Audio load error:', e);
+      setIsPlaying(false);
+      setIsLoading(false);
+      // You could show a toast or error message here
+    };
 
     audio.addEventListener('loadstart', handleLoadStart);
     audio.addEventListener('canplay', handleCanPlay);
@@ -79,6 +93,8 @@ export function VoicePlayer({
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('volumechange', handleVolumeChange);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('loaderror', handleLoadError);
 
     return () => {
       audio.removeEventListener('loadstart', handleLoadStart);
@@ -88,6 +104,8 @@ export function VoicePlayer({
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('volumechange', handleVolumeChange);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('loaderror', handleLoadError);
     };
   }, [onPlay, onPause, onEnded]);
 
@@ -164,7 +182,15 @@ export function VoicePlayer({
 
   return (
     <div className={cn("space-y-3", className)}>
-      <audio ref={audioRef} preload="metadata" />
+      <audio 
+        ref={audioRef} 
+        preload="metadata" 
+        onError={(e) => {
+          console.error('Audio file not found:', audioUrl);
+          setIsPlaying(false);
+          setIsLoading(false);
+        }}
+      />
       
       {/* Progress Bar */}
       <div className="space-y-2">
