@@ -186,10 +186,10 @@ export function VoiceCardPopup({
                 size="sm"
                 onClick={handleLike}
                 disabled={isLiking}
-                className={`flex items-center gap-1 text-xs px-3 ${
+                className={`flex items-center gap-1 text-xs px-3 backdrop-blur-md transition-all duration-300 ${
                   isLiked 
-                    ? "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white" 
-                    : "border-blue-500 text-blue-300 hover:bg-blue-800/30"
+                    ? "bg-gradient-to-r from-blue-600/80 to-blue-500/80 hover:from-blue-700/90 hover:to-blue-600/90 text-white border border-blue-400/50 shadow-lg" 
+                    : "bg-white/10 border border-blue-400/30 text-blue-300 hover:bg-white/20 hover:border-blue-400/50"
                 }`}
               >
                 <Heart className={`h-3 w-3 ${isLiked ? "fill-current" : ""}`} />
@@ -200,7 +200,7 @@ export function VoiceCardPopup({
                 variant="outline"
                 size="sm"
                 onClick={handleComment}
-                className="flex items-center gap-1 text-xs px-3 border-blue-500 text-blue-300 hover:bg-blue-800/30"
+                className="flex items-center gap-1 text-xs px-3 bg-white/10 border border-blue-400/30 text-blue-300 hover:bg-white/20 hover:border-blue-400/50 backdrop-blur-md transition-all duration-300"
               >
                 <MessageCircle className="h-3 w-3" />
                 {voice.comments?.length || 0}
@@ -210,7 +210,7 @@ export function VoiceCardPopup({
                 variant="outline"
                 size="sm"
                 onClick={handleShare}
-                className="flex items-center gap-1 text-xs px-3 border-blue-500 text-blue-300 hover:bg-blue-800/30"
+                className="flex items-center gap-1 text-xs px-3 bg-white/10 border border-blue-400/30 text-blue-300 hover:bg-white/20 hover:border-blue-400/50 backdrop-blur-md transition-all duration-300"
               >
                 <Share className="h-3 w-3" />
                 Share
