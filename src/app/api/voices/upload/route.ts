@@ -79,7 +79,10 @@ export async function POST(req: NextRequest) {
       console.log(`✅ File written successfully`);
     } catch (writeError) {
       console.error(`❌ Failed to write file:`, writeError);
-      throw new Error(`Failed to write audio file: ${writeError.message}`);
+      const message = writeError instanceof Error 
+        ? `Failed to write audio file: ${writeError.message}`
+        : "Failed to write audio file";
+      throw new Error(message);
     }
     
     // Verify file was created
