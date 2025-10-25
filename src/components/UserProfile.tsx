@@ -16,6 +16,7 @@ interface UserProfile {
   username?: string;
   displayName?: string;
   pfpUrl?: string;
+  bio?: string;
   createdAt: string;
   stats: {
     totalVoices: number;
@@ -120,7 +121,7 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
 
   if (!profile) {
     return (
-      <div className="text-center py-12 text-gray-500">
+      <div className="text-center py-12 text-white">
         <p>Profile not found</p>
       </div>
     );
@@ -129,82 +130,85 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
   return (
     <div className={className}>
       {/* Profile Header - Simplified */}
-      <Card className="p-4 mb-4">
+      <Card className="p-4 mb-4 bg-blue-900/50 border-blue-800">
         <div className="flex items-center gap-3">
           <Avatar className="h-12 w-12">
             <AvatarImage src={profile.pfpUrl} alt={getDisplayName()} />
-            <AvatarFallback className="text-sm">{getInitials()}</AvatarFallback>
+            <AvatarFallback className="text-sm bg-blue-800 text-white">{getInitials()}</AvatarFallback>
           </Avatar>
           
           <div className="flex-1">
-            <h1 className="text-lg font-bold">{getDisplayName()}</h1>
-            <p className="text-sm text-gray-500">@{getUsername()}</p>
+            <h1 className="text-lg font-bold text-white">{getDisplayName()}</h1>
+            <p className="text-sm text-blue-200">@{getUsername()}</p>
+            {profile.bio && (
+              <p className="text-sm text-blue-300 mt-1">{profile.bio}</p>
+            )}
           </div>
 
           <div className="text-right">
-            <div className="text-lg font-bold">{formatNumber(profile.stats.totalPoints)} XP</div>
-            <div className="text-xs text-gray-500">Rank #{profile.stats.rank}</div>
+            <div className="text-lg font-bold text-white">{formatNumber(profile.stats.totalPoints)} XP</div>
+            <div className="text-xs text-blue-200">Rank #{profile.stats.rank}</div>
           </div>
         </div>
       </Card>
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="voices">Voices</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 bg-blue-900/50 border-blue-800">
+          <TabsTrigger value="overview" className="text-white data-[state=active]:bg-blue-800">Overview</TabsTrigger>
+          <TabsTrigger value="voices" className="text-white data-[state=active]:bg-blue-800">Voices</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-6">
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Points Breakdown</h3>
+          <Card className="p-6 bg-blue-900/50 border-blue-800">
+            <h3 className="text-lg font-semibold mb-4 text-white">Points Breakdown</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-blue-500" />
-                  <span>Views</span>
+                  <Eye className="h-4 w-4 text-blue-300" />
+                  <span className="text-white">Views</span>
                 </div>
-                <span className="font-medium">{formatNumber(profile.stats.viewPoints)} pts</span>
+                <span className="font-medium text-white">{formatNumber(profile.stats.viewPoints)} pts</span>
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <Heart className="h-4 w-4 text-red-500" />
-                  <span>Likes</span>
+                  <Heart className="h-4 w-4 text-red-400" />
+                  <span className="text-white">Likes</span>
                 </div>
-                <span className="font-medium">{formatNumber(profile.stats.likePoints)} pts</span>
+                <span className="font-medium text-white">{formatNumber(profile.stats.likePoints)} pts</span>
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4 text-green-500" />
-                  <span>Comments</span>
+                  <MessageCircle className="h-4 w-4 text-green-400" />
+                  <span className="text-white">Comments</span>
                 </div>
-                <span className="font-medium">{formatNumber(profile.stats.commentPoints)} pts</span>
+                <span className="font-medium text-white">{formatNumber(profile.stats.commentPoints)} pts</span>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t">
-              <h4 className="font-medium mb-2">Achievements</h4>
+            <div className="mt-6 pt-4 border-t border-blue-800">
+              <h4 className="font-medium mb-2 text-white">Achievements</h4>
               <div className="flex flex-wrap gap-2">
                 {profile.stats.totalVoices >= 1 && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
                     <Mic className="h-3 w-3" />
                     First Voice
                   </Badge>
                 )}
                 {profile.stats.totalLikes >= 100 && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
                     <Heart className="h-3 w-3" />
                     Popular Creator
                   </Badge>
                 )}
                 {profile.stats.totalComments >= 50 && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
                     <MessageCircle className="h-3 w-3" />
                     Conversation Starter
                   </Badge>
                 )}
                 {profile.stats.rank <= 10 && (
-                  <Badge variant="secondary" className="flex items-center gap-1">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
                     <Trophy className="h-3 w-3" />
                     Top 10
                   </Badge>
@@ -217,40 +221,40 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
         <TabsContent value="voices" className="mt-6">
           <div className="space-y-4">
             {profile.voices.length === 0 ? (
-              <Card className="p-6 text-center">
-                <Mic className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                <p className="text-gray-500">No voices yet</p>
-                <p className="text-sm text-gray-400">Start recording to share your voice!</p>
+              <Card className="p-6 text-center bg-blue-900/50 border-blue-800">
+                <Mic className="h-12 w-12 mx-auto mb-4 text-blue-300" />
+                <p className="text-white">No voices yet</p>
+                <p className="text-sm text-blue-200">Start recording to share your voice!</p>
               </Card>
             ) : (
               profile.voices.map((voice) => (
-                <Card key={voice.id} className="p-4">
+                <Card key={voice.id} className="p-4 bg-blue-900/50 border-blue-800">
                   <div className="flex items-start gap-4">
                     {/* Voice Player */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="outline" className="text-xs border-blue-600 text-blue-200">
                           {formatDuration(voice.duration)}
                         </Badge>
                         {voice.isAnonymous && (
-                          <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-600">
+                          <Badge variant="secondary" className="text-xs bg-blue-800 text-blue-200">
                             Anonymous
                           </Badge>
                         )}
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-blue-300">
                           {formatDistanceToNow(new Date(voice.createdAt), { addSuffix: true })}
                         </span>
                       </div>
                       
                       {voice.title && (
-                        <h4 className="font-medium mb-2">{voice.title}</h4>
+                        <h4 className="font-medium mb-2 text-white">{voice.title}</h4>
                       )}
                       
                       {voice.description && (
-                        <p className="text-sm text-gray-600 mb-3">{voice.description}</p>
+                        <p className="text-sm text-blue-200 mb-3">{voice.description}</p>
                       )}
 
-                      <div className="bg-gray-50 rounded-lg p-3">
+                      <div className="bg-blue-800/50 rounded-lg p-3 border border-blue-700">
                         <VoicePlayer
                           audioUrl={voice.audioUrl}
                           duration={voice.duration}
@@ -260,7 +264,7 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
                     </div>
 
                     {/* Stats */}
-                    <div className="text-right text-sm text-gray-500">
+                    <div className="text-right text-sm text-blue-200">
                       <div className="flex items-center gap-1 mb-1">
                         <Eye className="h-3 w-3" />
                         {voice.views.length}
@@ -273,7 +277,7 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
                         <MessageCircle className="h-3 w-3" />
                         {voice.comments.length}
                       </div>
-                      <div className="text-xs mt-2">
+                      <div className="text-xs mt-2 text-blue-300">
                         {voice.views.length + (voice.likes.length * 5) + (voice.comments.length * 10)} pts
                       </div>
                     </div>

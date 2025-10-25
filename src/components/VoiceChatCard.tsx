@@ -76,7 +76,7 @@ export function VoiceChatCard({
     <div 
       className={`
         w-full max-w-md mx-auto mb-4
-        ${isAnimating ? 'animate-slide-up' : ''}
+        ${isAnimating ? 'animate-scale-in' : ''}
       `}
       style={{
         animationDelay: `${animationDelay}ms`,
@@ -97,9 +97,9 @@ export function VoiceChatCard({
               aria-label={isPlaying ? "Pause voice message" : "Play voice message"}
             >
               {isPlaying ? (
-                <Pause className="w-5 h-5 text-blue-600" />
+                <Pause className="w-5 h-5 text-blue-800" />
               ) : (
-                <Play className="w-5 h-5 text-blue-600" />
+                <Play className="w-5 h-5 text-blue-800" />
               )}
             </button>
 

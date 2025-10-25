@@ -224,19 +224,19 @@ export default function App() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-md mx-auto px-4 py-6">
+      <div className="max-w-md mx-auto px-4 py-6 pb-20">
         {!isConnected ? (
           <div className="text-center space-y-6 py-12">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-800 to-blue-900 rounded-full flex items-center justify-center shadow-2xl">
               <Mic className="h-10 w-10 text-white" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">Welcome to Voice Social</h2>
-              <p className="text-blue-100 mb-6">Connect your wallet to start sharing your voice</p>
+              <p className="text-blue-200 mb-6">Connect your wallet to start sharing your voice</p>
             </div>
             <Button
               onClick={() => connect({ connector: connectors[0] })}
-              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-3 rounded-full font-semibold"
+              className="bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 text-white px-8 py-3 rounded-full font-semibold shadow-xl"
             >
               Connect Wallet
             </Button>
@@ -248,7 +248,7 @@ export default function App() {
               <Button
                 onClick={handleGetVoice}
                 disabled={isLoadingVoice}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-3 rounded-full font-semibold"
+                className="bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 text-white px-8 py-3 rounded-full font-semibold shadow-xl"
               >
                 {isLoadingVoice ? "Loading..." : "Get Voice"}
               </Button>
@@ -256,7 +256,7 @@ export default function App() {
 
             {/* Voice Chat Feed - Auto display */}
             {voiceChatData.length > 0 && (
-              <div className="mt-8">
+              <div className="mt-6 animate-fade-in">
                 <VoiceChatFeed voices={voiceChatData} />
               </div>
             )}
@@ -266,13 +266,13 @@ export default function App() {
 
       {/* Bottom Navigation */}
       {isConnected && (
-        <div className="fixed bottom-0 left-0 right-0 bg-blue-500/90 backdrop-blur-md border-t border-blue-300">
+        <div className="fixed bottom-0 left-0 right-0 bg-blue-900/95 backdrop-blur-md border-t border-blue-800 z-50">
           <div className="max-w-md mx-auto px-4 py-3">
             <div className="flex items-center justify-around gap-2">
               <Button
                 onClick={() => setOpenLeaderboard(true)}
                 variant="ghost"
-                className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-400/20"
+                className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-800/30"
               >
                 <Trophy className="h-5 w-5" />
                 <span className="text-xs">Leaderboard</span>
@@ -280,7 +280,7 @@ export default function App() {
               
               <Button
                 onClick={() => setShowVoiceRecorder(true)}
-                className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg"
+                className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 text-white shadow-2xl"
               >
                 <Mic className="h-6 w-6" />
               </Button>
@@ -288,7 +288,7 @@ export default function App() {
               <Button
                 onClick={() => setOpenProfile(true)}
                 variant="ghost"
-                className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-400/20"
+                className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-800/30"
               >
                 <User className="h-5 w-5" />
                 <span className="text-xs">Profile</span>
