@@ -15,7 +15,7 @@ export function useMiniAppSdk() {
   const [isMiniApp, setIsMiniApp] = useState(false);
 
   useEffect(() => {
-    if (!sdk) return;
+    if (!sdk || typeof window === 'undefined') return;
 
     sdk.on("miniAppAdded", async ({ notificationDetails }) => {
       setLastEvent(
@@ -102,6 +102,8 @@ export function useMiniAppSdk() {
   }, [context?.user?.fid, context?.user?.username]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const updateContext = async () => {
       // Check if in MiniApp first (faster detection)
       const miniAppStatus = await sdk.isInMiniApp();
