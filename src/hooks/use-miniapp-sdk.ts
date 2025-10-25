@@ -23,35 +23,50 @@ export function useMiniAppSdk() {
       );
       setIsMiniAppSaved(true);
       
-      // Auto-save notification token + send welcome notification
-      if (notificationDetails?.token && context?.user?.fid) {
+      // Auto-save user data and notification token
+      if (context?.user?.fid) {
         try {
-          // Save token to database
-          await fetch('/api/notifications/save-token', {
+          // Save user data to database
+          await fetch('/api/users/save', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               fid: context.user.fid,
-              token: notificationDetails.token,
-              url: notificationDetails.url
+              username: context.user.username,
+              displayName: context.user.displayName,
+              pfpUrl: context.user.pfpUrl,
+              bio: context.user.bio
             })
           });
+
+          // Save notification token if available
+          if (notificationDetails?.token) {
+            await fetch('/api/notifications/save-token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                fid: context.user.fid,
+                token: notificationDetails.token,
+                url: notificationDetails.url
+              })
+            });
+            
+            // Send welcome notification
+            await fetch('/api/notifications/send', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                fid: context.user.fid,
+                title: "🎤 Welcome to Voice Social!",
+                message: `Welcome ${context.user.username || 'User'}! Start sharing your voice and connect with others! 🎵`,
+                notificationType: "welcome"
+              })
+            });
+          }
           
-          // Send welcome notification
-          await fetch('/api/notifications/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              fid: context.user.fid,
-              title: "🎤 Welcome to Voice Social!",
-              message: `Welcome ${context.user.username || 'User'}! Start sharing your voice and connect with others! 🎵`,
-              notificationType: "welcome"
-            })
-          });
-          
-          console.log("Welcome notification sent to new user");
+          console.log("User data and notification token saved successfully");
         } catch (error) {
-          console.error("Failed to save token or send welcome notification:", error);
+          console.error("Failed to save user data or notification token:", error);
         }
       }
     });

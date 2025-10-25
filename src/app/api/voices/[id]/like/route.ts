@@ -21,6 +21,23 @@ export async function POST(
 
     const { id: voiceId } = await params;
 
+    // Ensure user exists in database before creating like
+    await prisma.user.upsert({
+      where: { fid: BigInt(userFid) },
+      update: {},
+      create: {
+        fid: BigInt(userFid),
+        username: `user_${userFid}`,
+      },
+    });
+
+    // Ensure UserPoints entry exists
+    await prisma.userPoints.upsert({
+      where: { userFid: BigInt(userFid) },
+      update: {},
+      create: { userFid: BigInt(userFid) },
+    });
+
     // Check if voice exists
     const voice = await prisma.voice.findUnique({
       where: { id: voiceId },

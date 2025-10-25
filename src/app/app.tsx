@@ -50,7 +50,6 @@ export default function App() {
   const [showVoicePopup, setShowVoicePopup] = useState(false);
 
   // Voice chat feed state
-  const [showVoiceChatFeed, setShowVoiceChatFeed] = useState(false);
   const [voiceChatData, setVoiceChatData] = useState<any[]>([]);
 
   // Load user data on mount and trigger add miniapp
@@ -79,6 +78,13 @@ export default function App() {
       // Add miniapp will be triggered automatically by the SDK
     }
   }, [context?.user?.fid, isMiniApp]);
+
+  // Auto-load voice chat data when connected
+  useEffect(() => {
+    if (isConnected) {
+      handleLoadVoiceChatData();
+    }
+  }, [isConnected, handleLoadVoiceChatData]);
 
   // Handle get random voice
   const handleGetVoice = useCallback(async () => {
@@ -221,16 +227,16 @@ export default function App() {
       <div className="max-w-md mx-auto px-4 py-6">
         {!isConnected ? (
           <div className="text-center space-y-6 py-12">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
               <Mic className="h-10 w-10 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome to Voice Social</h2>
-              <p className="text-gray-600 mb-6">Connect your wallet to start sharing your voice</p>
+              <h2 className="text-2xl font-bold text-white mb-2">Welcome to Voice Social</h2>
+              <p className="text-blue-100 mb-6">Connect your wallet to start sharing your voice</p>
             </div>
             <Button
               onClick={() => connect({ connector: connectors[0] })}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-semibold"
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-3 rounded-full font-semibold"
             >
               Connect Wallet
             </Button>
@@ -238,39 +244,35 @@ export default function App() {
         ) : (
           <div className="space-y-6">
             {/* Get Voice Button - No Card */}
-            <div className="text-center space-y-4">
+            <div className="text-center">
               <Button
                 onClick={handleGetVoice}
                 disabled={isLoadingVoice}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-semibold"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-3 rounded-full font-semibold"
               >
                 {isLoadingVoice ? "Loading..." : "Get Voice"}
               </Button>
-              
-              <Button
-                onClick={() => {
-                  handleLoadVoiceChatData();
-                  setShowVoiceChatFeed(true);
-                }}
-                variant="outline"
-                className="border-purple-300 text-purple-600 hover:bg-purple-50 px-6 py-2 rounded-full font-medium"
-              >
-                🎵 Voice Chat Feed
-              </Button>
             </div>
+
+            {/* Voice Chat Feed - Auto display */}
+            {voiceChatData.length > 0 && (
+              <div className="mt-8">
+                <VoiceChatFeed voices={voiceChatData} />
+              </div>
+            )}
           </div>
         )}
       </div>
 
       {/* Bottom Navigation */}
       {isConnected && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-blue-200">
+        <div className="fixed bottom-0 left-0 right-0 bg-blue-500/90 backdrop-blur-md border-t border-blue-300">
           <div className="max-w-md mx-auto px-4 py-3">
             <div className="flex items-center justify-around gap-2">
               <Button
                 onClick={() => setOpenLeaderboard(true)}
                 variant="ghost"
-                className="flex flex-col items-center gap-1 px-3 py-2"
+                className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-400/20"
               >
                 <Trophy className="h-5 w-5" />
                 <span className="text-xs">Leaderboard</span>
@@ -278,7 +280,7 @@ export default function App() {
               
               <Button
                 onClick={() => setShowVoiceRecorder(true)}
-                className="w-14 h-14 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg"
+                className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg"
               >
                 <Mic className="h-6 w-6" />
               </Button>
@@ -286,7 +288,7 @@ export default function App() {
               <Button
                 onClick={() => setOpenProfile(true)}
                 variant="ghost"
-                className="flex flex-col items-center gap-1 px-3 py-2"
+                className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-400/20"
               >
                 <User className="h-5 w-5" />
                 <span className="text-xs">Profile</span>
@@ -413,26 +415,6 @@ export default function App() {
         </div>
       )}
 
-      {/* Voice Chat Feed */}
-      {showVoiceChatFeed && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl mx-4 max-w-4xl w-full h-[80vh] shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">🎵 Voice Chat Feed</h3>
-              <Button
-                variant="ghost"
-                onClick={() => setShowVoiceChatFeed(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </Button>
-            </div>
-            <div className="h-full overflow-hidden">
-              <VoiceChatFeed voices={voiceChatData} />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

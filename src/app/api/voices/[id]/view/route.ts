@@ -32,6 +32,23 @@ export async function POST(
     };
 
     if (userFid) {
+      // Ensure user exists in database before creating view
+      await prisma.user.upsert({
+        where: { fid: BigInt(userFid) },
+        update: {},
+        create: {
+          fid: BigInt(userFid),
+          username: `user_${userFid}`,
+        },
+      });
+
+      // Ensure UserPoints entry exists
+      await prisma.userPoints.upsert({
+        where: { userFid: BigInt(userFid) },
+        update: {},
+        create: { userFid: BigInt(userFid) },
+      });
+
       viewData.userFid = BigInt(userFid);
     } else {
       // For anonymous views, use IP address

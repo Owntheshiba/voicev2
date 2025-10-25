@@ -32,7 +32,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className="min-h-screen overflow-y-auto bg-gradient-to-b from-green-100 via-green-200 to-emerald-200 text-slate-900">
+      <body className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 text-white">
         <ThemeProviderClient>
           <Providers>
             <SidebarProvider>
