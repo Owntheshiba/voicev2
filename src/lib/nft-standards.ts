@@ -205,3 +205,32 @@ export const THIRDWEB_OPENEDITONERC721_ABI = [
 
 // Thirdweb native token address (ETH)
 export const THIRDWEB_NATIVE_TOKEN = "0x0000000000000000000000000000000000000000" as Address;
+
+// ERC165 Interface Detection ABI
+export const ERC165_ABI = [
+  {
+    inputs: [{ name: "interfaceId", type: "bytes4" }],
+    name: "supportsInterface",
+    outputs: [{ name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function"
+  }
+] as const;
+
+// Interface IDs for ERC standards
+export const INTERFACE_IDS = {
+  ERC721: "0x80ac58cd" as const,
+  ERC1155: "0xd9b67a26" as const,
+  ERC165: "0x01ffc9a7" as const,
+} as const;
+
+// Manifold Detection ABI
+export const MANIFOLD_DETECTION_ABI = [
+  {
+    inputs: [],
+    name: "getExtensions",
+    outputs: [{ name: "", type: "address[]" }],
+    stateMutability: "view",
+    type: "function"
+  }
+] as const;
