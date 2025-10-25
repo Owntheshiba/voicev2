@@ -15,12 +15,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-white group-[.toaster]:text-neutral-950 group-[.toaster]:border-neutral-200 group-[.toaster]:shadow-lg dark:group-[.toaster]:bg-neutral-950 dark:group-[.toaster]:text-neutral-50 dark:group-[.toaster]:border-neutral-800",
-          description: "group-[.toast]:text-neutral-500 dark:group-[.toast]:text-neutral-400",
+            "group toast group-[.toaster]:bg-gradient-to-r group-[.toaster]:from-blue-900 group-[.toaster]:to-purple-900 group-[.toaster]:text-white group-[.toaster]:border-blue-700 group-[.toaster]:shadow-2xl group-[.toaster]:backdrop-blur-md",
+          description: "group-[.toast]:text-blue-100 group-[.toast]:opacity-90",
           actionButton:
-            "group-[.toast]:bg-neutral-900 group-[.toast]:text-neutral-50 dark:group-[.toast]:bg-neutral-50 dark:group-[.toast]:text-neutral-900",
+            "group-[.toast]:bg-gradient-to-r group-[.toast]:from-purple-500 group-[.toast]:to-pink-500 group-[.toast]:text-white group-[.toast]:border-purple-300 group-[.toast]:shadow-lg",
           cancelButton:
-            "group-[.toast]:bg-neutral-100 group-[.toast]:text-neutral-500 dark:group-[.toast]:bg-neutral-800 dark:group-[.toast]:text-neutral-400",
+            "group-[.toast]:bg-blue-800/30 group-[.toast]:text-blue-200 group-[.toast]:border-blue-600 group-[.toast]:hover:bg-blue-700/40",
         },
       }}
       {...props}

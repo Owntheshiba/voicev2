@@ -59,12 +59,28 @@ export function VoiceChatCard({
       setCurrentTime(0);
     };
 
+    const handleError = (e: any) => {
+      console.error('Audio playback error:', e);
+      setIsPlaying(false);
+      // You could show a toast or error message here
+    };
+
+    const handleLoadError = (e: any) => {
+      console.error('Audio load error:', e);
+      setIsPlaying(false);
+      // You could show a toast or error message here
+    };
+
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('loaderror', handleLoadError);
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('loaderror', handleLoadError);
     };
   }, []);
 
@@ -128,6 +144,10 @@ export function VoiceChatCard({
         ref={audioRef}
         src={voice.audioUrl}
         preload="metadata"
+        onError={(e) => {
+          console.error('Audio file not found:', voice.audioUrl);
+          setIsPlaying(false);
+        }}
       />
     </div>
   );

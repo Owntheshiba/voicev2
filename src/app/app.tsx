@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "~/components/ui/sheet";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 // import { ShareCastButton } from "~/components/share-cast-button"; // Moved to upload success popup
 import { AddMiniappButton } from "~/components/add-miniapp-button";
 import { VoiceRecorder } from "~/components/VoiceRecorder";
@@ -193,7 +193,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-800 via-purple-900 to-pink-900 relative">
-      <Toaster position="top-center" />
       
       {/* Header */}
       <div className="sticky top-0 z-40 bg-gradient-to-r from-blue-900/95 via-purple-900/95 to-pink-900/95 backdrop-blur-md border-b border-purple-500/30">
@@ -275,7 +274,7 @@ export default function App() {
                 className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-800/30"
               >
                 <Trophy className="h-5 w-5" />
-                <span className="text-xs">Leaderboard</span>
+                <span className="text-xs"></span>
               </Button>
               
               <Button
@@ -291,7 +290,7 @@ export default function App() {
                 className="flex flex-col items-center gap-1 px-3 py-2 text-white hover:bg-blue-800/30"
               >
                 <User className="h-5 w-5" />
-                <span className="text-xs">Profile</span>
+                <span className="text-xs"></span>
               </Button>
       </div>
     </div>
