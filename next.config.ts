@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     "127.0.0.1",
     "*.modal.host",
     "*.trycloudflare.com",
+    "*.ngrok-free.dev",
+    "*.ngrok.io",
   ],
   serverExternalPackages: ['@farcaster/miniapp-sdk', '@farcaster/miniapp-core'],
   webpack: (config, { isServer }) => {

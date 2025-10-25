@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
+import { existsSync } from "fs";
 import { join } from "path";
 import { prisma } from "~/lib/prisma";
 import { POINTS } from "~/lib/constants";
@@ -28,6 +29,11 @@ export async function POST(req: NextRequest) {
     // Validate file type
     if (!audioFile.type.startsWith("audio/")) {
       return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
+    }
+
+    // Validate file size (minimum 1KB to avoid empty files)
+    if (audioFile.size < 1024) {
+      return NextResponse.json({ error: "File too small, minimum 1KB required" }, { status: 400 });
     }
 
     // Create or update user with Farcaster data
@@ -65,6 +71,28 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
     
     await writeFile(filePath, buffer);
+    
+    // Verify file was created
+    console.log(`Audio file saved to: ${filePath}`);
+    console.log(`File size: ${buffer.length} bytes`);
+    
+    // Check if file actually exists and has content
+    if (!existsSync(filePath)) {
+      throw new Error(`Failed to save audio file: ${filePath}`);
+    }
+    
+    // Verify file size matches uploaded file
+    const savedFileSize = require('fs').statSync(filePath).size;
+    if (savedFileSize !== buffer.length) {
+      throw new Error(`File size mismatch: expected ${buffer.length}, got ${savedFileSize}`);
+    }
+    
+    // Additional validation for minimum file size
+    if (savedFileSize < 1024) {
+      // Delete the invalid file
+      require('fs').unlinkSync(filePath);
+      throw new Error(`Saved file too small: ${savedFileSize} bytes`);
+    }
 
     // Create public URL
     const audioUrl = `/uploads/voices/${fileName}`;

@@ -45,17 +45,20 @@ export async function GET(req: NextRequest) {
     });
 
     // Convert BigInt to string for JSON serialization
-    const transformedVoices = voices.map((voice: any) => ({
-      ...voice,
-      userFid: voice.userFid.toString(),
-      user: {
-        ...voice.user,
-        fid: voice.user.fid.toString(),
-      },
-      likes: voice.likes.map((like: any) => ({
-        userFid: like.userFid.toString(),
-      })),
-    }));
+    const transformedVoices = voices.map((voice: any) => {
+      console.log(`Voice ID: ${voice.id}, Audio URL: ${voice.audioUrl}`);
+      return {
+        ...voice,
+        userFid: voice.userFid.toString(),
+        user: {
+          ...voice.user,
+          fid: voice.user.fid.toString(),
+        },
+        likes: voice.likes.map((like: any) => ({
+          userFid: like.userFid.toString(),
+        })),
+      };
+    });
 
     return NextResponse.json({
       success: true,

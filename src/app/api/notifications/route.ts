@@ -56,9 +56,20 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    // Convert BigInt to string for JSON serialization
+    const transformedNotifications = notifications.map((notification: any) => ({
+      ...notification,
+      recipientFid: notification.recipientFid.toString(),
+      senderFid: notification.senderFid?.toString(),
+      sender: notification.sender ? {
+        ...notification.sender,
+        fid: notification.sender.fid.toString(),
+      } : null,
+    }));
+
     return NextResponse.json({
       success: true,
-      notifications,
+      notifications: transformedNotifications,
       unreadCount,
     });
   } catch (error) {
