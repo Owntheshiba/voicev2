@@ -31,17 +31,18 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
-      <body className="min-h-screen overflow-y-auto bg-gradient-to-br from-blue-800 via-blue-900 to-blue-950 text-white">
+      <head>
+        <meta name="theme-color" content="#1e3a8a" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
+      <body className="min-h-screen overflow-y-auto text-white">
         <ThemeProviderClient>
           <Providers>
-            <SidebarProvider>
-              <SidebarInset>
-                <div className="flex flex-1 flex-col gap-4 lg:px-4 lg:py-10 min-h-full">
-                  {children}
-                </div>
-              </SidebarInset>
-            </SidebarProvider>
+            <div className="min-h-screen">
+              {children}
+            </div>
           </Providers>
           <Toaster richColors position="top-center" />
         </ThemeProviderClient>

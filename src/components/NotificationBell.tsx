@@ -46,13 +46,13 @@ export function NotificationBell({ onClick, currentUserFid, className }: Notific
       onClick={onClick}
       variant="ghost"
       size="sm"
-      className={cn("relative", className)}
+      className={cn("relative text-white hover:bg-blue-800/30 border border-blue-600/30 hover:border-blue-500", className)}
     >
-      <Bell className="h-5 w-5" />
+      <Bell className="h-5 w-5 text-blue-200" />
       {unreadCount > 0 && (
         <Badge 
           variant="destructive" 
-          className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs font-bold"
+          className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs font-bold bg-red-500 animate-pulse"
         >
           {unreadCount > 99 ? "99+" : unreadCount}
         </Badge>

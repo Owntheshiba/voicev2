@@ -46,8 +46,8 @@ export function VoiceChatFeed({ voices, className }: VoiceChatFeedProps) {
   return (
     <div className={`voice-chat-feed ${className || ''}`}>
       <div className="relative min-h-[400px] max-h-[600px] overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-800 via-blue-900 to-blue-950 rounded-2xl" />
+        {/* Background gradient - Transparent */}
+        <div className="absolute inset-0 bg-transparent rounded-2xl" />
         
         {/* Voice cards container */}
         <div className="relative z-10 flex flex-col items-center justify-start h-full px-4 py-6 space-y-3">
@@ -69,11 +69,11 @@ export function VoiceChatFeed({ voices, className }: VoiceChatFeedProps) {
           ))}
         </div>
 
-        {/* Floating elements for visual appeal */}
-        <div className="absolute top-4 left-4 w-16 h-16 bg-blue-600 rounded-full opacity-20 animate-pulse" />
-        <div className="absolute top-20 right-8 w-12 h-12 bg-blue-700 rounded-full opacity-30 animate-bounce" />
-        <div className="absolute bottom-16 left-8 w-8 h-8 bg-blue-800 rounded-full opacity-25 animate-pulse" />
-        <div className="absolute bottom-8 right-4 w-20 h-20 bg-blue-900 rounded-full opacity-20 animate-bounce" />
+        {/* Floating elements for visual appeal - Transparent */}
+        <div className="absolute top-4 left-4 w-16 h-16 bg-purple-500/20 rounded-full opacity-20 animate-pulse" />
+        <div className="absolute top-20 right-8 w-12 h-12 bg-pink-500/20 rounded-full opacity-30 animate-bounce" />
+        <div className="absolute bottom-16 left-8 w-8 h-8 bg-blue-500/20 rounded-full opacity-25 animate-pulse" />
+        <div className="absolute bottom-8 right-4 w-20 h-20 bg-purple-500/20 rounded-full opacity-20 animate-bounce" />
       </div>
     </div>
   );

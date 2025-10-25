@@ -192,17 +192,17 @@ export default function App() {
   }, [sdk?.actions]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-800 via-purple-900 to-pink-900 relative">
       <Toaster position="top-center" />
       
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-blue-200">
+      <div className="sticky top-0 z-40 bg-gradient-to-r from-blue-900/95 via-purple-900/95 to-pink-900/95 backdrop-blur-md border-b border-purple-500/30">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center border border-purple-300 shadow-lg">
               <Mic className="h-4 w-4 text-white" />
             </div>
-            <h1 className="font-bold text-lg text-gray-800">Voice Social</h1>
+            <h1 className="font-bold text-lg text-white">Voice Social</h1>
             </div>
           
           <div className="flex items-center gap-2">
@@ -224,10 +224,10 @@ export default function App() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-md mx-auto px-4 py-6 pb-20">
+      <div className="max-w-md mx-auto px-4 py-6 pb-20 relative z-10">
         {!isConnected ? (
           <div className="text-center space-y-6 py-12">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-800 to-blue-900 rounded-full flex items-center justify-center shadow-2xl">
+            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-2xl border-2 border-purple-300 card-professional">
               <Mic className="h-10 w-10 text-white" />
             </div>
             <div>
@@ -236,7 +236,7 @@ export default function App() {
             </div>
             <Button
               onClick={() => connect({ connector: connectors[0] })}
-              className="bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 text-white px-8 py-3 rounded-full font-semibold shadow-xl"
+              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-semibold shadow-xl border-2 border-purple-300 btn-professional"
             >
               Connect Wallet
             </Button>
@@ -248,7 +248,7 @@ export default function App() {
               <Button
                 onClick={handleGetVoice}
                 disabled={isLoadingVoice}
-                className="bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 text-white px-8 py-3 rounded-full font-semibold shadow-xl"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-semibold shadow-xl border-2 border-purple-300 btn-professional"
               >
                 {isLoadingVoice ? "Loading..." : "Get Voice"}
               </Button>
@@ -266,9 +266,9 @@ export default function App() {
 
       {/* Bottom Navigation */}
       {isConnected && (
-        <div className="fixed bottom-0 left-0 right-0 bg-blue-900/95 backdrop-blur-md border-t border-blue-800 z-50">
-          <div className="max-w-md mx-auto px-4 py-3">
-            <div className="flex items-center justify-around gap-2">
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-blue-900 via-purple-900 to-pink-900 backdrop-blur-md border-t border-purple-500/30 z-50 shadow-2xl">
+          <div className="max-w-md mx-auto px-4 py-4">
+            <div className="flex items-center justify-around gap-4">
               <Button
                 onClick={() => setOpenLeaderboard(true)}
                 variant="ghost"
@@ -280,9 +280,9 @@ export default function App() {
               
               <Button
                 onClick={() => setShowVoiceRecorder(true)}
-                className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-800 to-blue-900 hover:from-blue-900 hover:to-blue-950 text-white shadow-2xl"
+                className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-2xl border-2 border-purple-300 btn-professional"
               >
-                <Mic className="h-6 w-6" />
+                <Mic className="h-7 w-7" />
               </Button>
               
               <Button
@@ -385,27 +385,27 @@ export default function App() {
       {/* Upload Success Popup */}
       {showUploadSuccess && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 mx-4 max-w-sm w-full shadow-2xl">
+          <div className="bg-gradient-to-br from-blue-900/95 via-purple-900/95 to-pink-900/95 border-purple-500/30 rounded-2xl p-6 mx-4 max-w-sm w-full shadow-2xl text-white">
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-green-600/20 border-2 border-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Voice Uploaded!</h3>
-              <p className="text-gray-600 mb-6">Your voice has been successfully uploaded to Voice Social.</p>
+              <h3 className="text-lg font-semibold text-white mb-2">Voice Uploaded!</h3>
+              <p className="text-blue-200 mb-6">Your voice has been successfully uploaded to Voice Social.</p>
               
               <div className="flex gap-3">
                 <Button
                   variant="outline"
                   onClick={() => setShowUploadSuccess(false)}
-                  className="flex-1"
+                  className="flex-1 border-blue-600 text-blue-300 hover:bg-blue-800/30"
                 >
                   Close
                 </Button>
                 <Button
                   onClick={handleShareVoice}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
                 >
                   Share
                 </Button>

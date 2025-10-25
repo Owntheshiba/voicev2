@@ -67,8 +67,8 @@ export function Leaderboard({ className }: LeaderboardProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="flex items-center gap-2">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-current" />
+        <div className="flex items-center gap-2 text-white">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-400" />
           <span>Loading leaderboard...</span>
         </div>
       </div>
@@ -84,6 +84,7 @@ export function Leaderboard({ className }: LeaderboardProps) {
           variant={timeframe === "all" ? "default" : "outline"}
           onClick={() => setTimeframe("all")}
           size="sm"
+          className={timeframe === "all" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "border-purple-500 text-purple-300 hover:bg-purple-800/30"}
         >
           All Time
         </Button>
@@ -91,6 +92,7 @@ export function Leaderboard({ className }: LeaderboardProps) {
           variant={timeframe === "weekly" ? "default" : "outline"}
           onClick={() => setTimeframe("weekly")}
           size="sm"
+          className={timeframe === "weekly" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "border-purple-500 text-purple-300 hover:bg-purple-800/30"}
         >
           Weekly
         </Button>
@@ -98,6 +100,7 @@ export function Leaderboard({ className }: LeaderboardProps) {
           variant={timeframe === "monthly" ? "default" : "outline"}
           onClick={() => setTimeframe("monthly")}
           size="sm"
+          className={timeframe === "monthly" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "border-purple-500 text-purple-300 hover:bg-purple-800/30"}
         >
           Monthly
         </Button>
@@ -106,13 +109,13 @@ export function Leaderboard({ className }: LeaderboardProps) {
 
       {/* Leaderboard Entries */}
       {leaderboard.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-blue-200">
           No data available for this timeframe
         </div>
       ) : (
         <div className="space-y-3">
           {leaderboard.map((entry) => (
-            <div key={entry.user.fid} className="bg-white rounded-lg p-4 border border-gray-200">
+            <div key={entry.user.fid} className="bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 rounded-lg p-4 border border-purple-500/30">
               <div className="flex items-center gap-4">
                 {/* Rank */}
                 <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
@@ -123,18 +126,18 @@ export function Leaderboard({ className }: LeaderboardProps) {
                 <div className="flex items-center gap-3 flex-1">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={entry.user.pfpUrl} alt={getDisplayName(entry.user)} />
-                    <AvatarFallback className="text-sm">{getInitials(entry.user)}</AvatarFallback>
+                    <AvatarFallback className="text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white">{getInitials(entry.user)}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <div className="font-medium text-sm">{getDisplayName(entry.user)}</div>
-                    <div className="text-xs text-gray-500">@{entry.user.username || `user_${entry.user.fid}`}</div>
+                    <div className="font-medium text-sm text-white">{getDisplayName(entry.user)}</div>
+                    <div className="text-xs text-blue-300">@{entry.user.username || `user_${entry.user.fid}`}</div>
                   </div>
                 </div>
                 
                 {/* Stats */}
                 <div className="text-right">
-                  <div className="text-sm text-gray-600">{entry.voicesCount} voices</div>
-                  <div className="font-bold text-purple-600">{entry.totalPoints.toLocaleString()} XP</div>
+                  <div className="text-sm text-blue-300">{entry.voicesCount} voices</div>
+                  <div className="font-bold text-purple-400">{entry.totalPoints.toLocaleString()} XP</div>
                 </div>
               </div>
             </div>

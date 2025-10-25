@@ -171,10 +171,10 @@ export function CommentModal({ voiceId, currentUserFid, isOpen, onClose }: Comme
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md max-h-[80vh] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-md max-h-[80vh] overflow-hidden flex flex-col bg-blue-900/95 border-blue-700 text-white">
           <DialogHeader>
-            <DialogTitle>Comments</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-white">Comments</DialogTitle>
+            <DialogDescription className="text-blue-200">
               Join the conversation and share your thoughts
             </DialogDescription>
           </DialogHeader>
@@ -182,9 +182,9 @@ export function CommentModal({ voiceId, currentUserFid, isOpen, onClose }: Comme
           {/* Comments List */}
           <div className="flex-1 overflow-y-auto space-y-4 pr-2">
             {loading ? (
-              <div className="text-center py-4">Loading comments...</div>
+              <div className="text-center py-4 text-white">Loading comments...</div>
             ) : comments.length === 0 ? (
-              <div className="text-center py-4 text-gray-500">
+              <div className="text-center py-4 text-blue-300">
                 No comments yet. Be the first to comment!
               </div>
             ) : (
@@ -192,21 +192,21 @@ export function CommentModal({ voiceId, currentUserFid, isOpen, onClose }: Comme
                 <div key={comment.id} className="flex gap-3">
                   <Avatar className="h-8 w-8 flex-shrink-0">
                     <AvatarImage src={comment.user.pfpUrl} alt={getDisplayName(comment.user)} />
-                    <AvatarFallback>{getInitials(comment.user)}</AvatarFallback>
+                    <AvatarFallback className="bg-blue-700 text-white">{getInitials(comment.user)}</AvatarFallback>
                   </Avatar>
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-medium text-sm">{getDisplayName(comment.user)}</span>
-                      <span className="text-xs text-gray-500">
+                      <span className="font-medium text-sm text-white">{getDisplayName(comment.user)}</span>
+                      <span className="text-xs text-blue-300">
                         {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
                       </span>
                     </div>
                     
                     {comment.type === "text" ? (
-                      <p className="text-sm text-gray-700">{comment.content}</p>
+                      <p className="text-sm text-blue-200">{comment.content}</p>
                     ) : (
-                      <div className="bg-gray-50 rounded-lg p-2">
+                      <div className="bg-blue-800/50 rounded-lg p-2 border border-blue-700">
                         <VoicePlayer
                           audioUrl={comment.content!}
                           className="w-full"
@@ -222,33 +222,34 @@ export function CommentModal({ voiceId, currentUserFid, isOpen, onClose }: Comme
 
           {/* Comment Input */}
           {currentUserFid && (
-            <div className="border-t pt-4 space-y-3">
+            <div className="border-t border-blue-700 pt-4 space-y-3">
               <div className="flex gap-2">
                 <Textarea
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   placeholder="Write a comment..."
-                  className="flex-1 min-h-[60px]"
+                  className="flex-1 min-h-[60px] bg-blue-800/50 border-blue-600 text-white placeholder-blue-300"
                   maxLength={500}
                 />
                 <Button
                   onClick={() => setShowVoiceRecorder(true)}
                   variant="outline"
                   size="sm"
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 border-blue-600 text-blue-300 hover:bg-blue-800/30"
                 >
                   <Mic className="h-4 w-4" />
                 </Button>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-blue-300">
                   {commentText.length}/500 characters
                 </span>
                 <Button
                   onClick={submitTextComment}
                   disabled={!commentText.trim() || submitting}
                   size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   {submitting ? (
                     <>

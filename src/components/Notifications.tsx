@@ -101,13 +101,13 @@ export function Notifications({ currentUserFid, className }: NotificationsProps)
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case "LIKE":
-        return <Heart className="h-4 w-4 text-red-500" />;
+        return <Heart className="h-4 w-4 text-pink-400" />;
       case "COMMENT":
-        return <MessageCircle className="h-4 w-4 text-blue-500" />;
+        return <MessageCircle className="h-4 w-4 text-purple-400" />;
       case "FOLLOW":
-        return <Bell className="h-4 w-4 text-green-500" />;
+        return <Bell className="h-4 w-4 text-blue-400" />;
       default:
-        return <Bell className="h-4 w-4 text-gray-500" />;
+        return <Bell className="h-4 w-4 text-gray-400" />;
     }
   };
 
@@ -138,8 +138,8 @@ export function Notifications({ currentUserFid, className }: NotificationsProps)
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="flex items-center gap-2">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-current" />
+        <div className="flex items-center gap-2 text-white">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-400" />
           <span>Loading notifications...</span>
         </div>
       </div>
@@ -150,15 +150,15 @@ export function Notifications({ currentUserFid, className }: NotificationsProps)
     <div className={className}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Notifications</h2>
+        <h2 className="text-2xl font-bold text-white">Notifications</h2>
         {unreadCount > 0 && (
           <div className="flex items-center gap-2">
-            <Badge variant="destructive">{unreadCount} unread</Badge>
+            <Badge variant="destructive" className="bg-pink-500 text-white">{unreadCount} unread</Badge>
             <Button
               variant="outline"
               size="sm"
               onClick={() => markAsRead()}
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 border-purple-500 text-purple-300 hover:bg-purple-800/30"
             >
               <Check className="h-4 w-4" />
               Mark all read
@@ -170,8 +170,8 @@ export function Notifications({ currentUserFid, className }: NotificationsProps)
       {/* Notifications List */}
       <div className="space-y-3">
         {notifications.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
-            <Bell className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+          <div className="text-center py-12 text-blue-200">
+            <Bell className="h-12 w-12 mx-auto mb-4 text-purple-400" />
             <p>No notifications yet</p>
             <p className="text-sm">You'll see notifications here when people interact with your voices</p>
           </div>
@@ -180,7 +180,7 @@ export function Notifications({ currentUserFid, className }: NotificationsProps)
             <Card 
               key={notification.id} 
               className={`p-4 cursor-pointer transition-colors ${
-                !notification.read ? 'bg-blue-50 border-blue-200' : 'bg-white'
+                !notification.read ? 'bg-purple-900/50 border-purple-500/30' : 'bg-blue-900/30 border-blue-700/30'
               }`}
               onClick={() => {
                 if (!notification.read) {
@@ -203,15 +203,15 @@ export function Notifications({ currentUserFid, className }: NotificationsProps)
 
                 {/* Notification Content */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">{getNotificationText(notification)}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm font-medium text-white">{getNotificationText(notification)}</p>
+                  <p className="text-xs text-blue-300">
                     {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
                   </p>
                 </div>
 
                 {/* Unread Indicator */}
                 {!notification.read && (
-                  <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-2" />
+                  <div className="w-2 h-2 bg-pink-500 rounded-full flex-shrink-0 mt-2" />
                 )}
               </div>
             </Card>
@@ -220,7 +220,7 @@ export function Notifications({ currentUserFid, className }: NotificationsProps)
       </div>
 
       {/* Footer */}
-      <div className="mt-6 text-center text-sm text-gray-500">
+      <div className="mt-6 text-center text-sm text-blue-300">
         <p>Notifications appear when people like or comment on your voices</p>
       </div>
     </div>

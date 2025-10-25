@@ -107,10 +107,10 @@ export function VoiceCardPopup({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-[380px] max-h-[80vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[380px] max-h-[80vh] overflow-y-auto bg-gradient-to-br from-blue-900/95 via-purple-900/95 to-pink-900/95 border-purple-500/30 text-white">
           <DialogHeader className="pb-2">
-            <DialogTitle className="text-lg">Voice Details</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-lg text-white">Voice Details</DialogTitle>
+            <DialogDescription className="text-blue-200">
               Listen to this voice and interact with the community
             </DialogDescription>
           </DialogHeader>
@@ -120,42 +120,42 @@ export function VoiceCardPopup({
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
                 {voice?.isAnonymous ? (
-                  <AvatarFallback className="bg-gray-500 text-white text-xs">
+                  <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
                     ?
                   </AvatarFallback>
                 ) : (
                   <>
                     <AvatarImage src={voice.user?.pfpUrl} alt={getDisplayName(voice.user)} />
-                    <AvatarFallback className="text-xs">{getInitials(voice.user)}</AvatarFallback>
+                    <AvatarFallback className="text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white">{getInitials(voice.user)}</AvatarFallback>
                   </>
                 )}
               </Avatar>
               <div className="flex-1">
-                <div className="font-semibold text-sm">{getDisplayName(voice.user)}</div>
-                <div className="text-xs text-gray-500">
+                <div className="font-semibold text-sm text-white">{getDisplayName(voice.user)}</div>
+                <div className="text-xs text-blue-300">
                   {formatDistanceToNow(new Date(voice.createdAt), { addSuffix: true })}
                 </div>
               </div>
-              <Badge variant="secondary" className="text-xs px-2 py-1">
+              <Badge variant="secondary" className="text-xs px-2 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400">
                 {calculatePoints()} pts
               </Badge>
             </div>
 
             {/* Voice Title & Description */}
             <div>
-              <h3 className="font-semibold text-base mb-1">
+              <h3 className="font-semibold text-base mb-1 text-white">
                 {voice.title || "Untitled Voice"}
               </h3>
               {voice.description && (
-                <p className="text-sm text-gray-600">{voice.description}</p>
+                <p className="text-sm text-blue-200">{voice.description}</p>
               )}
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-blue-300 mt-1">
                 Duration: {Math.round(voice.duration)}s
               </div>
             </div>
 
             {/* Voice Player */}
-            <div className="bg-gray-50 rounded-lg p-3">
+            <div className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-lg p-3 border border-purple-500/30">
               <VoicePlayer 
                 audioUrl={voice.audioUrl} 
                 onPlay={handlePlay}
@@ -164,18 +164,18 @@ export function VoiceCardPopup({
             </div>
 
             {/* Stats */}
-            <div className="flex items-center justify-around text-center text-sm border-t border-b py-2">
+            <div className="flex items-center justify-around text-center text-sm border-t border-b border-purple-500/30 py-2">
               <div>
-                <div className="font-bold text-base">{voice.views?.length || 0}</div>
-                <div className="text-gray-500 text-xs">Views</div>
+                <div className="font-bold text-base text-white">{voice.views?.length || 0}</div>
+                <div className="text-blue-300 text-xs">Views</div>
               </div>
               <div>
-                <div className="font-bold text-base">{likeCount}</div>
-                <div className="text-gray-500 text-xs">Likes</div>
+                <div className="font-bold text-base text-white">{likeCount}</div>
+                <div className="text-blue-300 text-xs">Likes</div>
               </div>
               <div>
-                <div className="font-bold text-base">{voice.comments?.length || 0}</div>
-                <div className="text-gray-500 text-xs">Comments</div>
+                <div className="font-bold text-base text-white">{voice.comments?.length || 0}</div>
+                <div className="text-blue-300 text-xs">Comments</div>
               </div>
             </div>
 
@@ -186,7 +186,11 @@ export function VoiceCardPopup({
                 size="sm"
                 onClick={handleLike}
                 disabled={isLiking}
-                className="flex items-center gap-1 text-xs px-3"
+                className={`flex items-center gap-1 text-xs px-3 ${
+                  isLiked 
+                    ? "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white" 
+                    : "border-purple-500 text-purple-300 hover:bg-purple-800/30"
+                }`}
               >
                 <Heart className={`h-3 w-3 ${isLiked ? "fill-current" : ""}`} />
                 {isLiking ? "..." : likeCount}
@@ -196,7 +200,7 @@ export function VoiceCardPopup({
                 variant="outline"
                 size="sm"
                 onClick={handleComment}
-                className="flex items-center gap-1 text-xs px-3"
+                className="flex items-center gap-1 text-xs px-3 border-purple-500 text-purple-300 hover:bg-purple-800/30"
               >
                 <MessageCircle className="h-3 w-3" />
                 {voice.comments?.length || 0}
@@ -206,7 +210,7 @@ export function VoiceCardPopup({
                 variant="outline"
                 size="sm"
                 onClick={handleShare}
-                className="flex items-center gap-1 text-xs px-3"
+                className="flex items-center gap-1 text-xs px-3 border-purple-500 text-purple-300 hover:bg-purple-800/30"
               >
                 <Share className="h-3 w-3" />
                 Share

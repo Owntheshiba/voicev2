@@ -111,8 +111,8 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="flex items-center gap-2">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-current" />
+        <div className="flex items-center gap-2 text-white">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-400" />
           <span>Loading profile...</span>
         </div>
       </div>
@@ -130,11 +130,11 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
   return (
     <div className={className}>
       {/* Profile Header - Simplified */}
-      <Card className="p-4 mb-4 bg-blue-900/50 border-blue-800">
+      <Card className="p-4 mb-4 bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 border-purple-500/30">
         <div className="flex items-center gap-3">
           <Avatar className="h-12 w-12">
             <AvatarImage src={profile.pfpUrl} alt={getDisplayName()} />
-            <AvatarFallback className="text-sm bg-blue-800 text-white">{getInitials()}</AvatarFallback>
+            <AvatarFallback className="text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white">{getInitials()}</AvatarFallback>
           </Avatar>
           
           <div className="flex-1">
@@ -154,61 +154,61 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2 bg-blue-900/50 border-blue-800">
-          <TabsTrigger value="overview" className="text-white data-[state=active]:bg-blue-800">Overview</TabsTrigger>
-          <TabsTrigger value="voices" className="text-white data-[state=active]:bg-blue-800">Voices</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 border-purple-500/30">
+          <TabsTrigger value="overview" className="text-white data-[state=active]:bg-purple-800/50">Overview</TabsTrigger>
+          <TabsTrigger value="voices" className="text-white data-[state=active]:bg-purple-800/50">Voices</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-6">
-          <Card className="p-6 bg-blue-900/50 border-blue-800">
+          <Card className="p-6 bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 border-purple-500/30">
             <h3 className="text-lg font-semibold mb-4 text-white">Points Breakdown</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-blue-300" />
+                  <Eye className="h-4 w-4 text-blue-400" />
                   <span className="text-white">Views</span>
                 </div>
                 <span className="font-medium text-white">{formatNumber(profile.stats.viewPoints)} pts</span>
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <Heart className="h-4 w-4 text-red-400" />
+                  <Heart className="h-4 w-4 text-pink-400" />
                   <span className="text-white">Likes</span>
                 </div>
                 <span className="font-medium text-white">{formatNumber(profile.stats.likePoints)} pts</span>
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <MessageCircle className="h-4 w-4 text-green-400" />
+                  <MessageCircle className="h-4 w-4 text-purple-400" />
                   <span className="text-white">Comments</span>
                 </div>
                 <span className="font-medium text-white">{formatNumber(profile.stats.commentPoints)} pts</span>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-blue-800">
+            <div className="mt-6 pt-4 border-t border-purple-500/30">
               <h4 className="font-medium mb-2 text-white">Achievements</h4>
               <div className="flex flex-wrap gap-2">
                 {profile.stats.totalVoices >= 1 && (
-                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400">
                     <Mic className="h-3 w-3" />
                     First Voice
                   </Badge>
                 )}
                 {profile.stats.totalLikes >= 100 && (
-                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400">
                     <Heart className="h-3 w-3" />
                     Popular Creator
                   </Badge>
                 )}
                 {profile.stats.totalComments >= 50 && (
-                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400">
                     <MessageCircle className="h-3 w-3" />
                     Conversation Starter
                   </Badge>
                 )}
                 {profile.stats.rank <= 10 && (
-                  <Badge variant="secondary" className="flex items-center gap-1 bg-blue-800 text-white border-blue-700">
+                  <Badge variant="secondary" className="flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-400">
                     <Trophy className="h-3 w-3" />
                     Top 10
                   </Badge>
@@ -221,23 +221,23 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
         <TabsContent value="voices" className="mt-6">
           <div className="space-y-4">
             {profile.voices.length === 0 ? (
-              <Card className="p-6 text-center bg-blue-900/50 border-blue-800">
-                <Mic className="h-12 w-12 mx-auto mb-4 text-blue-300" />
+              <Card className="p-6 text-center bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 border-purple-500/30">
+                <Mic className="h-12 w-12 mx-auto mb-4 text-purple-400" />
                 <p className="text-white">No voices yet</p>
                 <p className="text-sm text-blue-200">Start recording to share your voice!</p>
               </Card>
             ) : (
               profile.voices.map((voice) => (
-                <Card key={voice.id} className="p-4 bg-blue-900/50 border-blue-800">
+                <Card key={voice.id} className="p-4 bg-gradient-to-r from-blue-900/50 via-purple-900/50 to-pink-900/50 border-purple-500/30">
                   <div className="flex items-start gap-4">
                     {/* Voice Player */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline" className="text-xs border-blue-600 text-blue-200">
+                        <Badge variant="outline" className="text-xs border-purple-500 text-purple-300">
                           {formatDuration(voice.duration)}
                         </Badge>
                         {voice.isAnonymous && (
-                          <Badge variant="secondary" className="text-xs bg-blue-800 text-blue-200">
+                          <Badge variant="secondary" className="text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                             Anonymous
                           </Badge>
                         )}
@@ -254,7 +254,7 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
                         <p className="text-sm text-blue-200 mb-3">{voice.description}</p>
                       )}
 
-                      <div className="bg-blue-800/50 rounded-lg p-3 border border-blue-700">
+                      <div className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-lg p-3 border border-purple-500/30">
                         <VoicePlayer
                           audioUrl={voice.audioUrl}
                           duration={voice.duration}

@@ -179,14 +179,15 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-md p-6 bg-white dark:bg-gray-900">
+      <Card className="w-full max-w-md p-6 bg-blue-900/95 border-blue-700 text-white">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">Record Voice</h3>
+          <h3 className="text-lg font-semibold text-white">Record Voice</h3>
           <Button
             variant="ghost"
             size="sm"
             onClick={cancelRecording}
             disabled={isUploading}
+            className="text-white hover:bg-blue-800/30"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -198,29 +199,29 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
             <div className="text-center">
               <div className="mb-4">
                 {isRecording ? (
-                  <div className="w-20 h-20 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center animate-pulse">
-                    <Mic className="h-8 w-8 text-red-600" />
+                  <div className="w-20 h-20 mx-auto bg-red-600/20 rounded-full flex items-center justify-center animate-pulse border-2 border-red-500">
+                    <Mic className="h-8 w-8 text-red-400" />
                   </div>
                 ) : (
-                  <div className="w-20 h-20 mx-auto bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-                    <MicOff className="h-8 w-8 text-gray-600" />
+                  <div className="w-20 h-20 mx-auto bg-blue-800/50 rounded-full flex items-center justify-center border-2 border-blue-600">
+                    <MicOff className="h-8 w-8 text-blue-300" />
                   </div>
                 )}
               </div>
               
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <p className="text-sm text-blue-200 mb-2">
                 {isRecording ? "Recording..." : "Ready to record"}
               </p>
               
-              <p className="text-2xl font-mono font-bold">
+              <p className="text-2xl font-mono font-bold text-white">
                 {formatDuration(duration)}
               </p>
             </div>
 
             {/* Progress Bar */}
             <div className="space-y-2">
-              <Progress value={progressPercentage} className="h-2" />
-              <p className="text-xs text-center text-gray-500">
+              <Progress value={progressPercentage} className="h-2 bg-blue-800/50" />
+              <p className="text-xs text-center text-blue-300">
                 Max duration: {MAX_RECORDING_DURATION} seconds
               </p>
             </div>
@@ -229,13 +230,13 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
             <div className="flex flex-col items-center gap-4">
               {!hasPermission && !requestingPermission ? (
                 <div className="text-center space-y-3">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-blue-200">
                     Microphone access is required to record voice
                   </p>
                   <Button
                     onClick={requestMicrophonePermission}
                     size="lg"
-                    className="bg-purple-600 hover:bg-purple-700"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     <Mic className="h-5 w-5 mr-2" />
                     Grant Microphone Access
@@ -243,7 +244,7 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
                 </div>
               ) : requestingPermission ? (
                 <div className="text-center">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-sm text-blue-200">
                     Requesting microphone permission...
                   </p>
                 </div>
@@ -251,7 +252,7 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
                 <Button
                   onClick={startRecordingHandler}
                   size="lg"
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-red-600 hover:bg-red-700 text-white"
                   disabled={status === "recording"}
                 >
                   <Mic className="h-5 w-5 mr-2" />
@@ -263,6 +264,7 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
                   size="lg"
                   variant="outline"
                   disabled={status !== "recording"}
+                  className="border-red-600 text-red-400 hover:bg-red-600/20"
                 >
                   <MicOff className="h-5 w-5 mr-2" />
                   Stop Recording
@@ -274,7 +276,7 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
           <div className="space-y-6">
             {/* Audio Preview */}
             <div className="text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm text-blue-200 mb-4">
                 Recording complete! Duration: {formatDuration(duration)}
               </p>
               
@@ -289,18 +291,18 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
             </div>
 
             {/* Anonymous Toggle */}
-            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-blue-800/50 rounded-lg border border-blue-700">
               <div className="flex items-center gap-3">
                 {isAnonymous ? (
-                  <EyeOff className="h-5 w-5 text-gray-500" />
+                  <EyeOff className="h-5 w-5 text-blue-300" />
                 ) : (
-                  <Eye className="h-5 w-5 text-gray-500" />
+                  <Eye className="h-5 w-5 text-blue-300" />
                 )}
                 <div>
-                  <Label htmlFor="anonymous-toggle" className="text-sm font-medium">
+                  <Label htmlFor="anonymous-toggle" className="text-sm font-medium text-white">
                     Upload Anonymously
                   </Label>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-blue-300">
                     {isAnonymous 
                       ? "Your voice will appear as anonymous to others" 
                       : "Your voice will show your profile information"
@@ -321,14 +323,14 @@ export function VoiceRecorder({ onUpload, onCancel, isUploading = false }: Voice
               <Button
                 onClick={cancelRecording}
                 variant="outline"
-                className="flex-1"
+                className="flex-1 border-blue-600 text-blue-300 hover:bg-blue-800/30"
                 disabled={isUploading}
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleUpload}
-                className="flex-1 bg-blue-600 hover:bg-blue-700"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
                 disabled={isUploading}
               >
                 {isUploading ? (

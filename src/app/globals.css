@@ -5,8 +5,66 @@
 body {
     color: white;
     font-family: "Inter", Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+    background: transparent;
     min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Professional text consistency */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    color: white;
+}
+
+p, span, div {
+    color: white;
+    line-height: 1.5;
+}
+
+/* Professional button effects */
+.btn-professional {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px 0 rgba(30, 58, 138, 0.3);
+}
+
+.btn-professional::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.btn-professional:hover::before {
+    left: 100%;
+}
+
+.btn-professional:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px 0 rgba(30, 58, 138, 0.4);
+}
+
+/* Professional card effects */
+.card-professional {
+    background: rgba(30, 58, 138, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-professional:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px 0 rgba(30, 58, 138, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 * {
@@ -106,55 +164,78 @@ body {
 @layer components {
     .chat-voice-card {
         @apply w-full max-w-md mx-auto;
-        background: linear-gradient(180deg, #1e40af, #1d4ed8);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 18px;
         padding: 18px;
-        box-shadow: 0 8px 30px rgba(30, 64, 175, 0.3);
+        box-shadow: 0 8px 32px rgba(124, 58, 237, 0.2);
         display: flex;
         gap: 14px;
         align-items: flex-start;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .chat-voice-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.3);
+        border-color: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.15);
     }
 
     .chat-voice-card .avatar {
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        background: linear-gradient(180deg, #1e3a8a, #1e40af);
+        background: linear-gradient(180deg, #7c3aed, #ec4899);
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: white;
         font-weight: 700;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
         flex: 0 0 48px;
-        border: 2px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .chat-voice-card .avatar:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+        background: linear-gradient(180deg, #8b5cf6, #f472b6);
     }
 
     .chat-voice-card .voice-bubble {
-        background: linear-gradient(180deg, #1e40af, #1d4ed8);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(226, 232, 240, 0.9));
         border-radius: 12px;
         padding: 12px 14px;
-        box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.1);
         flex: 1;
         display: flex;
         gap: 12px;
         align-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(30, 64, 175, 0.2);
+        backdrop-filter: blur(5px);
     }
 
     .chat-voice-card .play-btn {
         width: 44px;
         height: 44px;
         border-radius: 10px;
-        background: linear-gradient(180deg, #ffffff, #f8fafc);
-        border: 1px solid rgba(30, 64, 175, 0.3);
+        background: linear-gradient(180deg, #7c3aed, #ec4899);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         display: inline-grid;
         place-items: center;
         cursor: pointer;
-        box-shadow: 0 6px 14px rgba(30, 64, 175, 0.3);
-        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        box-shadow: 0 6px 14px rgba(124, 58, 237, 0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         flex: 0 0 44px;
+    }
+
+    .chat-voice-card .play-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(124, 58, 237, 0.5);
+        background: linear-gradient(180deg, #8b5cf6, #f472b6);
     }
 
     .chat-voice-card .play-btn:active {
@@ -173,11 +254,12 @@ body {
     .chat-voice-card .bar {
         width: 6px;
         height: 8px;
-        background: linear-gradient(180deg, #ffffff, #e2e8f0);
+        background: linear-gradient(180deg, #7c3aed, #ec4899);
         border-radius: 3px;
         transform-origin: bottom center;
         animation: bounce 900ms infinite ease-in-out;
         opacity: 0.95;
+        box-shadow: 0 2px 4px rgba(124, 58, 237, 0.3);
     }
 
     .chat-voice-card .bar:nth-child(1) { animation-delay: 0ms; }
@@ -200,6 +282,8 @@ body {
         margin-top: 6px;
         margin-left: 56px;
         opacity: 0.9;
+        font-weight: 500;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     }
 
     @keyframes bounce {

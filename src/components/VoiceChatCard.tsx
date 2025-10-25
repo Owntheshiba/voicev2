@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, Mic } from "lucide-react";
 
 interface VoiceChatCardProps {
   voice: {
@@ -85,7 +85,7 @@ export function VoiceChatCard({
     >
       <article className="chat-voice-card" aria-label="Voice note message">
         <div className="avatar" aria-hidden="true">
-          {getInitials(voice.user.displayName || voice.user.username)}
+          <Mic className="w-6 h-6 text-white" />
         </div>
 
         <div className="flex-1">
