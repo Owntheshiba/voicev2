@@ -79,6 +79,21 @@ export default function App() {
     }
   }, [context?.user?.fid, isMiniApp]);
 
+  // Handle load voice chat data
+  const handleLoadVoiceChatData = useCallback(async () => {
+    try {
+      const response = await fetch("/api/voices/random?limit=10");
+      if (!response.ok) {
+        throw new Error("Failed to fetch voice chat data");
+      }
+      const data = await response.json();
+      setVoiceChatData(data.voices || []);
+    } catch (error) {
+      console.error("Failed to load voice chat data:", error);
+      toast.error("Failed to load voice chat data");
+    }
+  }, []);
+
   // Auto-load voice chat data when connected
   useEffect(() => {
     if (isConnected) {
@@ -107,21 +122,6 @@ export default function App() {
       toast.error("Failed to get voice");
     } finally {
       setIsLoadingVoice(false);
-    }
-  }, []);
-
-  // Handle load voice chat data
-  const handleLoadVoiceChatData = useCallback(async () => {
-    try {
-      const response = await fetch("/api/voices/random?limit=10");
-      if (!response.ok) {
-        throw new Error("Failed to fetch voice chat data");
-      }
-      const data = await response.json();
-      setVoiceChatData(data.voices || []);
-    } catch (error) {
-      console.error("Failed to load voice chat data:", error);
-      toast.error("Failed to load voice chat data");
     }
   }, []);
 
