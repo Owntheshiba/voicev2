@@ -53,6 +53,15 @@ body {
         --sidebar-accent-foreground: 240 5.9% 10%;
         --sidebar-border: 220 13% 91%;
         --sidebar-ring: 217.2 91.2% 59.8%;
+
+        /* Voice Chat Card Variables */
+        --bg: #f3eefe;
+        --purple-100: #e9d9ff;
+        --purple-300: #b992ff;
+        --purple-500: #7b4de6;
+        --bubble: #cdb8ff;
+        --bubble-alt: #bfa1ff;
+        --text: #2b1b3d;
     }
     .dark {
         --background: 240 10% 3.9%;
@@ -88,5 +97,142 @@ body {
         --sidebar-accent-foreground: 240 4.8% 95.9%;
         --sidebar-border: 240 3.7% 15.9%;
         --sidebar-ring: 217.2 91.2% 59.8%;
+    }
+}
+
+/* Voice Chat Card Styles */
+@layer components {
+    .chat-voice-card {
+        @apply w-full max-w-md mx-auto;
+        background: linear-gradient(180deg, var(--purple-100), #efe6ff);
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 8px 30px rgba(91, 52, 155, 0.12);
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    .chat-voice-card .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(180deg, #6d44d9, #a77bff);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        flex: 0 0 48px;
+    }
+
+    .chat-voice-card .voice-bubble {
+        background: linear-gradient(180deg, var(--bubble), var(--bubble-alt));
+        border-radius: 12px;
+        padding: 12px 14px;
+        box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.03);
+        flex: 1;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .chat-voice-card .play-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #ffffff, #f0e8ff);
+        border: none;
+        display: inline-grid;
+        place-items: center;
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(123, 77, 230, 0.18);
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        flex: 0 0 44px;
+    }
+
+    .chat-voice-card .play-btn:active {
+        transform: scale(0.98);
+    }
+
+    .chat-voice-card .waveform {
+        flex: 1;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding-right: 6px;
+    }
+
+    .chat-voice-card .bar {
+        width: 6px;
+        height: 8px;
+        background: linear-gradient(180deg, #7b4de6, #b992ff);
+        border-radius: 3px;
+        transform-origin: bottom center;
+        animation: bounce 900ms infinite ease-in-out;
+        opacity: 0.95;
+    }
+
+    .chat-voice-card .bar:nth-child(1) { animation-delay: 0ms; }
+    .chat-voice-card .bar:nth-child(2) { animation-delay: 80ms; }
+    .chat-voice-card .bar:nth-child(3) { animation-delay: 160ms; }
+    .chat-voice-card .bar:nth-child(4) { animation-delay: 240ms; }
+    .chat-voice-card .bar:nth-child(5) { animation-delay: 320ms; }
+    .chat-voice-card .bar:nth-child(6) { animation-delay: 400ms; }
+    .chat-voice-card .bar:nth-child(7) { animation-delay: 480ms; }
+
+    .chat-voice-card .waveform.paused .bar {
+        animation-play-state: paused;
+        transform: scaleY(0.5);
+        opacity: 0.6;
+    }
+
+    .chat-voice-card .meta {
+        font-size: 12px;
+        color: #4a3270;
+        margin-top: 6px;
+        margin-left: 56px;
+    }
+
+    @keyframes bounce {
+        0% { transform: scaleY(0.35); opacity: 0.6; }
+        50% { transform: scaleY(1.15); opacity: 1; }
+        100% { transform: scaleY(0.35); opacity: 0.6; }
+    }
+
+    /* Slide up animation */
+    @keyframes slide-up {
+        0% {
+            transform: translateY(100px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .animate-slide-up {
+        animation: slide-up 0.6s ease-out forwards;
+    }
+
+    /* Responsive */
+    @media (max-width: 420px) {
+        .chat-voice-card {
+            padding: 12px;
+            gap: 10px;
+            border-radius: 14px;
+        }
+        .chat-voice-card .avatar {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+        }
+        .chat-voice-card .play-btn {
+            width: 40px;
+            height: 40px;
+        }
     }
 }

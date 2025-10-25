@@ -20,6 +20,7 @@ import { Notifications } from "~/components/Notifications";
 import { UserProfile } from "~/components/UserProfile";
 import { VoiceCardPopup } from "~/components/VoiceCardPopup";
 import { NotificationBell } from "~/components/NotificationBell";
+import { VoiceChatFeed } from "~/components/VoiceChatFeed";
 import { Button } from "~/components/ui/button";
 import { Mic, User, Trophy, Bell } from "lucide-react";
 
@@ -47,6 +48,10 @@ export default function App() {
   const [randomVoice, setRandomVoice] = useState<any>(null);
   const [isLoadingVoice, setIsLoadingVoice] = useState(false);
   const [showVoicePopup, setShowVoicePopup] = useState(false);
+
+  // Voice chat feed state
+  const [showVoiceChatFeed, setShowVoiceChatFeed] = useState(false);
+  const [voiceChatData, setVoiceChatData] = useState<any[]>([]);
 
   // Load user data on mount and trigger add miniapp
   useEffect(() => {
@@ -96,6 +101,21 @@ export default function App() {
       toast.error("Failed to get voice");
     } finally {
       setIsLoadingVoice(false);
+    }
+  }, []);
+
+  // Handle load voice chat data
+  const handleLoadVoiceChatData = useCallback(async () => {
+    try {
+      const response = await fetch("/api/voices/random?limit=10");
+      if (!response.ok) {
+        throw new Error("Failed to fetch voice chat data");
+      }
+      const data = await response.json();
+      setVoiceChatData(data.voices || []);
+    } catch (error) {
+      console.error("Failed to load voice chat data:", error);
+      toast.error("Failed to load voice chat data");
     }
   }, []);
 
@@ -218,13 +238,24 @@ export default function App() {
         ) : (
           <div className="space-y-6">
             {/* Get Voice Button - No Card */}
-            <div className="text-center">
+            <div className="text-center space-y-4">
               <Button
                 onClick={handleGetVoice}
                 disabled={isLoadingVoice}
                 className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-semibold"
               >
                 {isLoadingVoice ? "Loading..." : "Get Voice"}
+              </Button>
+              
+              <Button
+                onClick={() => {
+                  handleLoadVoiceChatData();
+                  setShowVoiceChatFeed(true);
+                }}
+                variant="outline"
+                className="border-purple-300 text-purple-600 hover:bg-purple-50 px-6 py-2 rounded-full font-medium"
+              >
+                🎵 Voice Chat Feed
               </Button>
             </div>
           </div>
@@ -378,6 +409,27 @@ export default function App() {
                 </Button>
           </div>
       </div>
+          </div>
+        </div>
+      )}
+
+      {/* Voice Chat Feed */}
+      {showVoiceChatFeed && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl mx-4 max-w-4xl w-full h-[80vh] shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">🎵 Voice Chat Feed</h3>
+              <Button
+                variant="ghost"
+                onClick={() => setShowVoiceChatFeed(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </Button>
+            </div>
+            <div className="h-full overflow-hidden">
+              <VoiceChatFeed voices={voiceChatData} />
+            </div>
           </div>
         </div>
       )}
