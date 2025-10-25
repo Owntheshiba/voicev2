@@ -70,19 +70,27 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await audioFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     
-    await writeFile(filePath, buffer);
+    console.log(`Attempting to save audio file to: ${filePath}`);
+    console.log(`Upload file size: ${audioFile.size} bytes`);
+    console.log(`Buffer size: ${buffer.length} bytes`);
+    
+    try {
+      await writeFile(filePath, buffer);
+      console.log(`✅ File written successfully`);
+    } catch (writeError) {
+      console.error(`❌ Failed to write file:`, writeError);
+      throw new Error(`Failed to write audio file: ${writeError.message}`);
+    }
     
     // Verify file was created
-    console.log(`Audio file saved to: ${filePath}`);
-    console.log(`File size: ${buffer.length} bytes`);
-    
-    // Check if file actually exists and has content
     if (!existsSync(filePath)) {
       throw new Error(`Failed to save audio file: ${filePath}`);
     }
     
     // Verify file size matches uploaded file
     const savedFileSize = require('fs').statSync(filePath).size;
+    console.log(`Saved file size: ${savedFileSize} bytes`);
+    
     if (savedFileSize !== buffer.length) {
       throw new Error(`File size mismatch: expected ${buffer.length}, got ${savedFileSize}`);
     }
@@ -93,6 +101,8 @@ export async function POST(req: NextRequest) {
       require('fs').unlinkSync(filePath);
       throw new Error(`Saved file too small: ${savedFileSize} bytes`);
     }
+    
+    console.log(`✅ Audio file saved successfully: ${fileName}`);
 
     // Create public URL
     const audioUrl = `/uploads/voices/${fileName}`;

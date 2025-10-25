@@ -34,7 +34,7 @@ export function VoicePlayer({
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Initialize audio element
   useEffect(() => {
@@ -74,6 +74,7 @@ export function VoicePlayer({
     
     const handleError = (e: any) => {
       console.error('Audio playback error:', e);
+      console.error('Audio URL:', audioUrl);
       setIsPlaying(false);
       setIsLoading(false);
       // You could show a toast or error message here
@@ -81,6 +82,7 @@ export function VoicePlayer({
     
     const handleLoadError = (e: any) => {
       console.error('Audio load error:', e);
+      console.error('Audio URL:', audioUrl);
       setIsPlaying(false);
       setIsLoading(false);
       // You could show a toast or error message here
