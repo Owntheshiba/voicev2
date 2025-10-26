@@ -11,7 +11,7 @@ interface VoiceChatCardProps {
       username: string;
       displayName?: string;
     };
-    audioUrl: string;
+    audioUrl?: string;  // Optional for backward compatibility
     duration: number;
     createdAt: string;
   };
@@ -41,6 +41,9 @@ export function VoiceChatCard({
     if (isPlaying) {
       audioRef.current.pause();
     } else {
+      // Set audio source before playing
+      const audioSrc = `/api/voices/${voice.id}/audio`;
+      audioRef.current.src = audioSrc;
       audioRef.current.play();
     }
     setIsPlaying(!isPlaying);
@@ -61,12 +64,14 @@ export function VoiceChatCard({
 
     const handleError = (e: any) => {
       console.error('Audio playback error:', e);
+      console.error('Audio source:', `/api/voices/${voice.id}/audio`);
       setIsPlaying(false);
       // You could show a toast or error message here
     };
 
     const handleLoadError = (e: any) => {
       console.error('Audio load error:', e);
+      console.error('Audio source:', `/api/voices/${voice.id}/audio`);
       setIsPlaying(false);
       // You could show a toast or error message here
     };
@@ -142,10 +147,9 @@ export function VoiceChatCard({
 
       <audio
         ref={audioRef}
-        src={voice.audioUrl}
         preload="metadata"
         onError={(e) => {
-          console.error('Audio file not found:', voice.audioUrl);
+          console.error('Audio file not found:', `/api/voices/${voice.id}/audio`);
           setIsPlaying(false);
         }}
       />

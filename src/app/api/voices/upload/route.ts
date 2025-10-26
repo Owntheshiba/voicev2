@@ -59,68 +59,44 @@ export async function POST(req: NextRequest) {
       create: { userFid: BigInt(userFid) },
     });
 
-    // Save file to local storage (Railway volume)
-    const fileName = `${userFid}_${Date.now()}.mp3`;
-    const uploadDir = join(process.cwd(), 'public', 'uploads', 'voices');
-    
-    // Ensure directory exists
-    await mkdir(uploadDir, { recursive: true });
-    
-    const filePath = join(uploadDir, fileName);
+    // Convert audio file to binary data for database storage
     const arrayBuffer = await audioFile.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const audioBuffer = Buffer.from(arrayBuffer);
     
-    console.log(`Attempting to save audio file to: ${filePath}`);
+    console.log(`Converting audio file to binary data...`);
     console.log(`Upload file size: ${audioFile.size} bytes`);
-    console.log(`Buffer size: ${buffer.length} bytes`);
+    console.log(`Buffer size: ${audioBuffer.length} bytes`);
     
+    // Validate file size
+    if (audioBuffer.length < 1024) {
+      throw new Error(`File too small: ${audioBuffer.length} bytes (minimum 1KB required)`);
+    }
+    
+    // Get MIME type
+    const mimeType = audioFile.type || 'audio/mpeg';
+    console.log(`Audio MIME type: ${mimeType}`);
+    
+    console.log(`✅ Audio file converted to binary data successfully`);
+
+    // Save voice record to database with binary audio data
+    let voice;
     try {
-      await writeFile(filePath, buffer);
-      console.log(`✅ File written successfully`);
-    } catch (writeError) {
-      console.error(`❌ Failed to write file:`, writeError);
-      const message = writeError instanceof Error 
-        ? `Failed to write audio file: ${writeError.message}`
-        : "Failed to write audio file";
-      throw new Error(message);
+      voice = await prisma.voice.create({
+        data: {
+          userFid: BigInt(userFid),
+          audioData: audioBuffer,
+          audioMimeType: mimeType,
+          duration,
+          title,
+          description,
+          isAnonymous,
+        } as any,
+      });
+      console.log(`✅ Voice record saved to database with binary data: ${voice.id}`);
+    } catch (dbError) {
+      console.error(`❌ Failed to save voice record to database:`, dbError);
+      throw new Error(`Failed to save voice record: ${dbError instanceof Error ? dbError.message : 'Unknown error'}`);
     }
-    
-    // Verify file was created
-    if (!existsSync(filePath)) {
-      throw new Error(`Failed to save audio file: ${filePath}`);
-    }
-    
-    // Verify file size matches uploaded file
-    const savedFileSize = require('fs').statSync(filePath).size;
-    console.log(`Saved file size: ${savedFileSize} bytes`);
-    
-    if (savedFileSize !== buffer.length) {
-      throw new Error(`File size mismatch: expected ${buffer.length}, got ${savedFileSize}`);
-    }
-    
-    // Additional validation for minimum file size
-    if (savedFileSize < 1024) {
-      // Delete the invalid file
-      require('fs').unlinkSync(filePath);
-      throw new Error(`Saved file too small: ${savedFileSize} bytes`);
-    }
-    
-    console.log(`✅ Audio file saved successfully: ${fileName}`);
-
-    // Create public URL
-    const audioUrl = `/uploads/voices/${fileName}`;
-
-    // Save voice record to database
-    const voice = await prisma.voice.create({
-      data: {
-        userFid: BigInt(userFid),
-        audioUrl,
-        duration,
-        title,
-        description,
-        isAnonymous,
-      } as any,
-    });
 
     // Convert BigInt to string for JSON serialization
     const voiceResponse = {
@@ -128,6 +104,7 @@ export async function POST(req: NextRequest) {
       userFid: voice.userFid.toString(),
     };
 
+    console.log(`✅ Upload completed successfully: ${voice.id} (${audioBuffer.length} bytes)`);
     return NextResponse.json({ success: true, voice: voiceResponse });
   } catch (error) {
     console.error("Failed to upload voice:", error);

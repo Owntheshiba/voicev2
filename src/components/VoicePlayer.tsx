@@ -8,7 +8,8 @@ import { Play, Pause, Volume2, VolumeX, RotateCcw } from "lucide-react";
 import { cn } from "~/lib/utils";
 
 interface VoicePlayerProps {
-  audioUrl: string;
+  audioUrl?: string;  // Optional for backward compatibility
+  voiceId?: string;   // Voice ID for database audio
   duration?: number;
   onPlay?: () => void;
   onPause?: () => void;
@@ -20,6 +21,7 @@ interface VoicePlayerProps {
 
 export function VoicePlayer({
   audioUrl,
+  voiceId,
   duration,
   onPlay,
   onPause,
@@ -39,10 +41,14 @@ export function VoicePlayer({
   // Initialize audio element
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.src = audioUrl;
-      audioRef.current.load();
+      // Use voiceId for database audio, fallback to audioUrl
+      const src = voiceId ? `/api/voices/${voiceId}/audio` : audioUrl;
+      if (src) {
+        audioRef.current.src = src;
+        audioRef.current.load();
+      }
     }
-  }, [audioUrl]);
+  }, [audioUrl, voiceId]);
 
   // Handle audio events
   useEffect(() => {
@@ -74,7 +80,7 @@ export function VoicePlayer({
     
     const handleError = (e: any) => {
       console.error('Audio playback error:', e);
-      console.error('Audio URL:', audioUrl);
+      console.error('Audio source:', voiceId ? `/api/voices/${voiceId}/audio` : audioUrl);
       setIsPlaying(false);
       setIsLoading(false);
       // You could show a toast or error message here
@@ -82,7 +88,7 @@ export function VoicePlayer({
     
     const handleLoadError = (e: any) => {
       console.error('Audio load error:', e);
-      console.error('Audio URL:', audioUrl);
+      console.error('Audio source:', voiceId ? `/api/voices/${voiceId}/audio` : audioUrl);
       setIsPlaying(false);
       setIsLoading(false);
       // You could show a toast or error message here
@@ -109,7 +115,7 @@ export function VoicePlayer({
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('loaderror', handleLoadError);
     };
-  }, [onPlay, onPause, onEnded]);
+  }, [onPlay, onPause, onEnded, audioUrl, voiceId]);
 
   // Auto-play effect
   useEffect(() => {
@@ -188,7 +194,7 @@ export function VoicePlayer({
         ref={audioRef} 
         preload="metadata" 
         onError={(e) => {
-          console.error('Audio file not found:', audioUrl);
+          console.error('Audio file not found:', voiceId ? `/api/voices/${voiceId}/audio` : audioUrl);
           setIsPlaying(false);
           setIsLoading(false);
         }}

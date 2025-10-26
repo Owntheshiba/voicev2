@@ -30,7 +30,9 @@ model Voice {
   id          String        @id @default(uuid())
   userFid     BigInt
   user        User          @relation(fields: [userFid], references: [fid])
-  audioUrl    String
+  audioUrl    String?       // Optional - for backward compatibility
+  audioData   Bytes?        // Binary audio data
+  audioMimeType String?     // MIME type (e.g., "audio/mpeg")
   duration    Float
   title       String?
   description String?
