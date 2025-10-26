@@ -67,7 +67,7 @@ export function VoiceChatCard({
         await audioRef.current.play();
         setIsPlaying(true);
       } catch (error) {
-        if (error.name === 'AbortError') {
+        if (error instanceof Error && error.name === 'AbortError') {
           console.log('Audio play request was aborted');
           return;
         }

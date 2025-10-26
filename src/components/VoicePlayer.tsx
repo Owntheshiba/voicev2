@@ -163,7 +163,7 @@ export function VoicePlayer({
         
         await audio.play();
       } catch (error) {
-        if (error.name === 'AbortError') {
+        if (error instanceof Error && error.name === 'AbortError') {
           console.log('Audio play request was aborted');
           return;
         }
