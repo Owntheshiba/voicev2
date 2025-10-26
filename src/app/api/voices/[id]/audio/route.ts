@@ -23,17 +23,17 @@ export async function GET(
         audioMimeType: true,
         audioUrl: true, // For backward compatibility
       },
-    });
+    } as any);
 
     if (!voice) {
       return NextResponse.json({ error: "Voice not found" }, { status: 404 });
     }
 
     // Check if we have binary audio data
-    if (voice.audioData) {
+    if ((voice as any).audioData) {
       // Serve binary audio data
-      const audioBuffer = Buffer.from(voice.audioData);
-      const mimeType = voice.audioMimeType || 'audio/mpeg';
+      const audioBuffer = Buffer.from((voice as any).audioData);
+      const mimeType = (voice as any).audioMimeType || 'audio/mpeg';
       
       console.log(`Serving audio from database: ${voiceId} (${audioBuffer.length} bytes, ${mimeType})`);
       
