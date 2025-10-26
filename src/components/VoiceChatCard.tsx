@@ -35,18 +35,27 @@ export function VoiceChatCard({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handlePlayPause = () => {
+  const handlePlayPause = async () => {
     if (!audioRef.current) return;
 
     if (isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
     } else {
-      // Set audio source before playing
-      const audioSrc = `/api/voices/${voice.id}/audio`;
-      audioRef.current.src = audioSrc;
-      audioRef.current.play();
+      try {
+        // Set audio source before playing
+        const audioSrc = `/api/voices/${voice.id}/audio`;
+        audioRef.current.src = audioSrc;
+        
+        // Wait for audio to load before playing
+        await audioRef.current.load();
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error('Audio playback failed:', error);
+        setIsPlaying(false);
+      }
     }
-    setIsPlaying(!isPlaying);
   };
 
   useEffect(() => {

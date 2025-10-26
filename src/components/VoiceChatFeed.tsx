@@ -45,7 +45,7 @@ export function VoiceChatFeed({ voices, className }: VoiceChatFeedProps) {
 
   return (
     <div className={`voice-chat-feed ${className || ''}`}>
-      <div className="relative min-h-[400px] max-h-[600px] overflow-hidden">
+      <div className="relative min-h-[400px] max-h-[600px] w-full overflow-hidden">
         {/* Background gradient - Transparent */}
         <div className="absolute inset-0 bg-transparent rounded-2xl" />
         
