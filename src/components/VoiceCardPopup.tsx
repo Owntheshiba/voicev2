@@ -157,7 +157,8 @@ export function VoiceCardPopup({
             {/* Voice Player */}
             <div className="bg-gradient-to-r from-blue-900/50 to-blue-800/50 rounded-lg p-3 border border-blue-500/30">
               <VoicePlayer 
-                audioUrl={voice.audioUrl} 
+                voiceId={voice.id}
+                audioUrl={voice.audioUrl} // Fallback for backward compatibility
                 onPlay={handlePlay}
                 className="w-full"
               />
