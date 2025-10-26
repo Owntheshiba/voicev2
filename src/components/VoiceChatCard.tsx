@@ -28,6 +28,7 @@ export function VoiceChatCard({
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const waveformRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -38,20 +39,38 @@ export function VoiceChatCard({
   const handlePlayPause = async () => {
     if (!audioRef.current) return;
 
+    // Cancel any ongoing play request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
       try {
+        // Create new abort controller for this play request
+        abortControllerRef.current = new AbortController();
+        
         // Set audio source before playing
         const audioSrc = `/api/voices/${voice.id}/audio`;
         audioRef.current.src = audioSrc;
         
         // Wait for audio to load before playing
         await audioRef.current.load();
+        
+        // Check if component is still mounted and not aborted
+        if (abortControllerRef.current?.signal.aborted) {
+          return;
+        }
+        
         await audioRef.current.play();
         setIsPlaying(true);
       } catch (error) {
+        if (error.name === 'AbortError') {
+          console.log('Audio play request was aborted');
+          return;
+        }
         console.error('Audio playback failed:', error);
         setIsPlaying(false);
       }
@@ -95,6 +114,21 @@ export function VoiceChatCard({
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('loaderror', handleLoadError);
+    };
+  }, []);
+
+  // Cleanup effect for component unmount
+  useEffect(() => {
+    return () => {
+      // Abort any ongoing play request when component unmounts
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      
+      // Pause audio if playing
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+      }
     };
   }, []);
 

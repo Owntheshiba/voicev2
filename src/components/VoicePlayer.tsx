@@ -31,6 +31,7 @@ export function VoicePlayer({
   autoPlay = false,
 }: VoicePlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(1);
@@ -124,14 +125,50 @@ export function VoicePlayer({
     }
   }, [autoPlay, isLoading]);
 
-  const togglePlayPause = useCallback(() => {
+  // Cleanup effect for component unmount
+  useEffect(() => {
+    return () => {
+      // Abort any ongoing play request when component unmounts
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      
+      // Pause audio if playing
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  const togglePlayPause = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio) return;
+
+    // Cancel any ongoing play request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
 
     if (isPlaying) {
       audio.pause();
     } else {
-      audio.play().catch(console.error);
+      try {
+        // Create new abort controller for this play request
+        abortControllerRef.current = new AbortController();
+        
+        // Check if component is still mounted and not aborted
+        if (abortControllerRef.current?.signal.aborted) {
+          return;
+        }
+        
+        await audio.play();
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.log('Audio play request was aborted');
+          return;
+        }
+        console.error('Audio playback failed:', error);
+      }
     }
   }, [isPlaying]);
 
