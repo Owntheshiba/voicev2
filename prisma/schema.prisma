@@ -103,3 +103,13 @@ model UserPoints {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model VoiceHistory {
+  id        String   @id @default(uuid())
+  userFid   BigInt   // User who requested the voice
+  voiceId   String   // Voice that was shown
+  createdAt DateTime @default(now())
+  
+  @@index([userFid, createdAt])
+  @@index([voiceId])
+}

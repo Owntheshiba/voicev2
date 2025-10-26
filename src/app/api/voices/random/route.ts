@@ -7,12 +7,40 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const limit = parseInt(searchParams.get("limit") || "10");
-    const page = parseInt(searchParams.get("page") || "1");
-    const offset = (page - 1) * limit;
+    const userFid = searchParams.get("userFid"); // Get user FID for 24h cooldown
+
+    // If userFid provided, get voices not shown to this user in last 24 hours
+    let whereClause: any = {};
+    
+    if (userFid) {
+      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      
+      // Get voice IDs that were shown to this user in last 24 hours
+      const recentVoiceHistory = await prisma.voiceHistory.findMany({
+        where: {
+          userFid: BigInt(userFid),
+          createdAt: {
+            gte: twentyFourHoursAgo
+          }
+        },
+        select: {
+          voiceId: true
+        }
+      });
+      
+      const recentVoiceIds = recentVoiceHistory.map(h => h.voiceId);
+      
+      // Exclude voices shown in last 24 hours
+      if (recentVoiceIds.length > 0) {
+        whereClause.id = {
+          notIn: recentVoiceIds
+        };
+      }
+    }
 
     // Get random voices with user data, likes, comments, and views
     const voices = await prisma.voice.findMany({
-      skip: offset,
+      where: whereClause,
       take: limit,
       orderBy: {
         createdAt: "desc", // For now, use chronological order. Can be changed to random later
@@ -44,6 +72,21 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    // Record voice history for 24h cooldown (only if userFid provided)
+    if (userFid && voices.length > 0) {
+      try {
+        await prisma.voiceHistory.createMany({
+          data: voices.map(voice => ({
+            userFid: BigInt(userFid),
+            voiceId: voice.id,
+          })),
+        });
+      } catch (error) {
+        console.error("Failed to record voice history:", error);
+        // Don't fail the request if history recording fails
+      }
+    }
+
     // Convert BigInt to string for JSON serialization
     const transformedVoices = voices.map((voice: any) => ({
       ...voice,
@@ -61,7 +104,6 @@ export async function GET(req: NextRequest) {
       success: true,
       voices: transformedVoices,
       pagination: {
-        page,
         limit,
         hasMore: voices.length === limit,
       },

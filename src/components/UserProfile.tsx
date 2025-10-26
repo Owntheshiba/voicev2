@@ -186,7 +186,29 @@ export function UserProfile({ userFid, className }: UserProfileProps) {
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-purple-500/30">
+            <div className="mt-6 pt-4 border-t border-blue-500/30">
+              <h4 className="font-medium mb-4 text-white">Total Activity</h4>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="text-center p-3 bg-blue-800/30 rounded-lg border border-blue-500/30">
+                  <div className="text-2xl font-bold text-white">{formatNumber(profile.stats.totalVoices)}</div>
+                  <div className="text-sm text-blue-200">Voices</div>
+                </div>
+                <div className="text-center p-3 bg-blue-800/30 rounded-lg border border-blue-500/30">
+                  <div className="text-2xl font-bold text-white">{formatNumber(profile.stats.totalViews)}</div>
+                  <div className="text-sm text-blue-200">Views</div>
+                </div>
+                <div className="text-center p-3 bg-blue-800/30 rounded-lg border border-blue-500/30">
+                  <div className="text-2xl font-bold text-white">{formatNumber(profile.stats.totalLikes)}</div>
+                  <div className="text-sm text-blue-200">Likes</div>
+                </div>
+                <div className="text-center p-3 bg-blue-800/30 rounded-lg border border-blue-500/30">
+                  <div className="text-2xl font-bold text-white">{formatNumber(profile.stats.totalComments)}</div>
+                  <div className="text-sm text-blue-200">Comments</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-blue-500/30">
               <h4 className="font-medium mb-2 text-white">Achievements</h4>
               <div className="flex flex-wrap gap-2">
                 {profile.stats.totalVoices >= 1 && (

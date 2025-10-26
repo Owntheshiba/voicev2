@@ -81,7 +81,8 @@ export default function App() {
   // Handle load voice chat data
   const handleLoadVoiceChatData = useCallback(async () => {
     try {
-      const response = await fetch("/api/voices/random?limit=10");
+      const userFidParam = context?.user?.fid ? `&userFid=${context.user.fid}` : '';
+      const response = await fetch(`/api/voices/random?limit=10${userFidParam}`);
       if (!response.ok) {
         throw new Error("Failed to fetch voice chat data");
       }
@@ -91,7 +92,7 @@ export default function App() {
       console.error("Failed to load voice chat data:", error);
       toast.error("Failed to load voice chat data");
     }
-  }, []);
+  }, [context?.user?.fid]);
 
   // Auto-load voice chat data when connected
   useEffect(() => {
@@ -104,7 +105,8 @@ export default function App() {
   const handleGetVoice = useCallback(async () => {
     setIsLoadingVoice(true);
     try {
-      const response = await fetch("/api/voices/random?limit=1");
+      const userFidParam = context?.user?.fid ? `&userFid=${context.user.fid}` : '';
+      const response = await fetch(`/api/voices/random?limit=1${userFidParam}`);
       if (response.ok) {
         const data = await response.json();
         if (data.voices && data.voices.length > 0) {
@@ -122,7 +124,7 @@ export default function App() {
     } finally {
       setIsLoadingVoice(false);
     }
-  }, []);
+  }, [context?.user?.fid]);
 
   // Handle voice upload
   const handleVoiceUpload = useCallback(async (audioBlob: Blob, duration: number, isAnonymous: boolean = false) => {
